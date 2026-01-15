@@ -1,10 +1,16 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import { useState, useRef } from "react";
-// import myImage from "../../../Images/image.png";
+import { useState, useRef, useCallback, useMemo } from "react";
 import myImage from "/img.jpeg";
 
-type NetworkNodeProps = {
+/**
+ * HeroSection Component
+ * Main hero section with interactive network visualization that responds to mouse movement.
+ * Features: Profile image, introduction text, CTA buttons, and animated background elements.
+ */
+
+// Type Definitions
+type NetworkNodeProps = Readonly<{
   x: number;
   y: number;
   delay: number;
@@ -15,37 +21,47 @@ type NetworkNodeProps = {
   containerY?: number;
   containerWidth?: number;
   containerHeight?: number;
-};
+}>;
 
-const NetworkNode = ({ x, y, delay, label, mouseX = 0, mouseY = 0, containerX = 0, containerY = 0, containerWidth = 320, containerHeight = 320 }: NetworkNodeProps) => {
-  // Calculate distance from mouse to node
-  const nodeAbsX = (containerX) + (containerWidth * x / 100);
-  const nodeAbsY = (containerY) + (containerHeight * y / 100);
-  
-  const distance = Math.sqrt(
-    Math.pow(mouseX - nodeAbsX, 2) + Math.pow(mouseY - nodeAbsY, 2)
-  );
-  
-  const maxDistance = 120;
-  const isNear = distance < maxDistance;
-  const influence = Math.max(0, 1 - distance / maxDistance);
-  
+// Network Node Component - Interactive with mouse repulsion
+const NetworkNode = ({
+  x,
+  y,
+  delay,
+  label,
+  mouseX = 0,
+  mouseY = 0,
+  containerX = 0,
+  containerY = 0,
+  containerWidth = 320,
+  containerHeight = 320,
+}: NetworkNodeProps) => {
+  // Calculate absolute position and distance from mouse
+  const nodeAbsX = containerX + (containerWidth * x) / 100;
+  const nodeAbsY = containerY + (containerHeight * y) / 100;
+
+  const distanceSquared =
+    Math.pow(mouseX - nodeAbsX, 2) + Math.pow(mouseY - nodeAbsY, 2);
+  const distance = Math.sqrt(distanceSquared);
+
+  const MAX_DISTANCE = 120;
+  const PUSH_FORCE = 20;
+  const isNear = distance < MAX_DISTANCE;
+  const influence = Math.max(0, 1 - distance / MAX_DISTANCE);
+
   // Calculate push direction
   const angle = Math.atan2(nodeAbsY - mouseY, nodeAbsX - mouseX);
-  const pushX = isNear ? Math.cos(angle) * influence * 20 : 0;
-  const pushY = isNear ? Math.sin(angle) * influence * 20 : 0;
+  const pushX = isNear ? Math.cos(angle) * influence * PUSH_FORCE : 0;
+  const pushY = isNear ? Math.sin(angle) * influence * PUSH_FORCE : 0;
 
   return (
     <motion.div
-      animate={{
-        x: pushX,
-        y: pushY,
-      }}
+      animate={{ x: pushX, y: pushY }}
       transition={{ type: "spring", stiffness: 150, damping: 15 }}
       className="absolute flex flex-col items-center"
       style={{ left: `${x}%`, top: `${y}%`, transform: "translateX(-50%)" }}
     >
-      {/* Label Badge - Positioned Above - Always Bright */}
+      {/* Label Badge */}
       <motion.div
         animate={{
           opacity: isNear ? 1 : 0.8,
@@ -57,7 +73,7 @@ const NetworkNode = ({ x, y, delay, label, mouseX = 0, mouseY = 0, containerX = 
           background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.85))",
           color: "hsl(var(--background))",
           border: "1px solid hsl(var(--primary) / 0.4)",
-          boxShadow: isNear 
+          boxShadow: isNear
             ? "0 0 16px hsl(var(--primary) / 0.6), 0 0 32px hsl(var(--primary) / 0.3), inset 0 1px 2px hsl(var(--primary) / 0.3)"
             : "0 0 12px hsl(var(--primary) / 0.4), 0 0 24px hsl(var(--primary) / 0.15), inset 0 1px 2px hsl(var(--primary) / 0.3)",
           backdropFilter: "blur(8px)",
@@ -66,16 +82,16 @@ const NetworkNode = ({ x, y, delay, label, mouseX = 0, mouseY = 0, containerX = 
         {label}
       </motion.div>
 
-      {/* Dot - Fade Animation */}
+      {/* Animated Dot */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ 
+        animate={{
           opacity: [0.3, 0.6, 0.3],
           scale: isNear ? 1.3 : 1,
         }}
-        transition={{ 
+        transition={{
           opacity: { duration: 4, delay, repeat: Infinity },
-          scale: { duration: 0.3 }
+          scale: { duration: 0.3 },
         }}
         className="w-2 h-2 rounded-full bg-primary"
       />
@@ -156,25 +172,33 @@ export function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const visualizationRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (visualizationRef.current) {
-      const rect = visualizationRef.current.getBoundingClientRect();
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
-    }
-  };
+  // Memoized mouse handler to prevent unnecessary re-renders
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    setMousePosition({
+      x: e.clientX,
+      y: e.clientY,
+    });
+  }, []);
 
-  const handleMouseLeave = () => {
-    setMousePosition({ x: -1000, y: -1000 }); // Move cursor far away to reset
-  };
+  // Reset mouse position when leaving the visualization area
+  const handleMouseLeave = useCallback(() => {
+    setMousePosition({ x: -1000, y: -1000 });
+  }, []);
+
+  // Memoized container bounds
+  const containerBounds = useMemo(() => {
+    if (!visualizationRef.current) {
+      return { left: 0, top: 0 };
+    }
+    const rect = visualizationRef.current.getBoundingClientRect();
+    return { left: rect.left, top: rect.top };
+  }, []);
 
   return (
     <section id="about" className="min-h-screen flex items-center justify-center pt-20">
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 justify-between w-full">
-          {/* Profile Image */}
+          {/* Profile Image Section */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -182,18 +206,16 @@ export function HeroSection() {
             className="relative flex-shrink-0 w-full lg:w-auto flex justify-center lg:justify-start"
           >
             <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-border bg-secondary">
-              <div className="w-full h-full flex items-center justify-center">
-                <img
-                  src={myImage}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
-              </div>
+              <img
+                src={myImage}
+                className="w-full h-full object-cover"
+                alt="Profile picture"
+              />
             </div>
             <div className="absolute -bottom-2 -right-2 w-24 h-24 rounded-full bg-primary/10" />
           </motion.div>
 
-          {/* Content */}
+          {/* Content Section */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -212,6 +234,8 @@ export function HeroSection() {
               I specialize in building modern web applications with clean code
               and thoughtful user interfaces.
             </p>
+
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
               <a
                 href="#resume"
@@ -234,7 +258,7 @@ export function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Right Side - Abstract Tech Visualization */}
+          {/* Interactive Network Visualization */}
           <motion.div
             ref={visualizationRef}
             onMouseMove={handleMouseMove}
@@ -244,32 +268,85 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="hidden lg:block relative w-80 h-80 flex-shrink-0 cursor-pointer"
           >
-            {/* Circular background with subtle gradient */}
+            {/* Circular Background */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/5 via-transparent to-accent/5 border border-primary/10" />
 
-            {/* Abstract grid pattern background */}
-            <motion.svg
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.08 }}
-              transition={{ duration: 1 }}
+            {/* Grid Pattern Background */}
+            <svg
               className="absolute inset-0 w-full h-full rounded-full overflow-hidden"
               style={{ pointerEvents: "none" }}
+              aria-hidden="true"
             >
               <defs>
                 <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
                   <path d="M 30 0 L 0 0 0 30" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" />
                 </pattern>
               </defs>
-              <circle cx="160" cy="160" r="160" fill="url(#grid)" />
-            </motion.svg>
+              <circle cx="160" cy="160" r="160" fill="url(#grid)" opacity="0.08" />
+            </svg>
 
-            {/* Animated network nodes with hover interaction */}
-            <NetworkNode x={20} y={20} delay={0} label="Resilient" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
-            <NetworkNode x={80} y={25} delay={0.3} label="Curious" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
-            <NetworkNode x={70} y={80} delay={0.6} label="Proactive" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
-            <NetworkNode x={25} y={75} delay={0.9} label="Adaptive" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
-            <NetworkNode x={50} y={50} delay={1.2} label="Collaborative" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
 
+            {/* Animated network nodes with mouse repulsion */}
+            <NetworkNode 
+              x={20} 
+              y={20} 
+              delay={0} 
+              label="Resilient" 
+              mouseX={mousePosition.x} 
+              mouseY={mousePosition.y} 
+              containerX={containerBounds.left} 
+              containerY={containerBounds.top} 
+              containerWidth={320} 
+              containerHeight={320} 
+            />
+            <NetworkNode 
+              x={80} 
+              y={25} 
+              delay={0.3} 
+              label="Curious" 
+              mouseX={mousePosition.x} 
+              mouseY={mousePosition.y} 
+              containerX={containerBounds.left} 
+              containerY={containerBounds.top} 
+              containerWidth={320} 
+              containerHeight={320} 
+            />
+            <NetworkNode 
+              x={70} 
+              y={80} 
+              delay={0.6} 
+              label="Proactive" 
+              mouseX={mousePosition.x} 
+              mouseY={mousePosition.y} 
+              containerX={containerBounds.left} 
+              containerY={containerBounds.top} 
+              containerWidth={320} 
+              containerHeight={320} 
+            />
+            <NetworkNode 
+              x={25} 
+              y={75} 
+              delay={0.9} 
+              label="Adaptive" 
+              mouseX={mousePosition.x} 
+              mouseY={mousePosition.y} 
+              containerX={containerBounds.left} 
+              containerY={containerBounds.top} 
+              containerWidth={320} 
+              containerHeight={320} 
+            />
+            <NetworkNode 
+              x={50} 
+              y={50} 
+              delay={1.2} 
+              label="Collaborative" 
+              mouseX={mousePosition.x} 
+              mouseY={mousePosition.y} 
+              containerX={containerBounds.left} 
+              containerY={containerBounds.top} 
+              containerWidth={320} 
+              containerHeight={320} 
+            />
 
             {/* Connecting lines - abstract network visualization */}
             <NetworkLine x1={20} y1={20} x2={50} y2={50} delay={0} />

@@ -1,20 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
+/**
+ * SkillSet Component
+ * Displays skills organized by category in a clean, animated 2-column grid layout
+ * with smooth entrance animations and interactive hover effects.
+ */
+
 // Types
-export type SkillItem = {
+export type SkillItem = Readonly<{
   name: string;
   level?: "Beginner" | "Intermediate" | "Advanced";
-  proficiency?: number; // 0-100 percentage
-};
+  proficiency?: number;
+}>;
 
-export type SkillCategory = {
+export type SkillCategory = Readonly<{
   title: string;
-  skills: SkillItem[];
-};
+  skills: readonly SkillItem[];
+}>;
+
+interface SkillSetProps {
+  readonly skills?: readonly SkillCategory[];
+}
 
 // Default skills organized by category - Ordered by AI awareness
-const defaultSkillSet: SkillCategory[] = [
+const defaultSkillSet: readonly SkillCategory[] = [
   {
     title: "AI / Machine Learning",
     skills: [
@@ -25,13 +35,28 @@ const defaultSkillSet: SkillCategory[] = [
     ],
   },
   {
-    title: "Computer Science Fundamentals",
+    title: "AI Tools & Libraries",
     skills: [
-      { name: "Data Structures & Algorithms" },
-      { name: "Operating Systems" },
-      { name: "Computer Networks" },
+      { name: "TensorFlow" },
+      { name: "PyTorch" },
+      { name: "scikit-learn" },
+      { name: "NumPy" },
+    ],
+  },
+  {
+    title: "Data Processing",
+    skills: [
+      { name: "Pandas" },
       { name: "Database Management Systems" },
-      { name: "Microprocessors" },
+      { name: "Data Structures & Algorithms" },
+    ],
+  },
+  {
+    title: "LLM & Agent Frameworks",
+    skills: [
+      { name: "LangChain" },
+      { name: "LangGraph" },
+      { name: "RESTful APIs" },
     ],
   },
   {
@@ -40,62 +65,39 @@ const defaultSkillSet: SkillCategory[] = [
       { name: "Python" },
       { name: "Java" },
       { name: "C++" },
+      { name: "JavaScript" },
     ],
   },
   {
-    title: "LLM & Agent Frameworks",
-    skills: [
-      { name: "LangChain" },
-      { name: "LangGraph" },
-    ],
-  },
-  {
-    title: "Frontend",
+    title: "Frontend Development",
     skills: [
       { name: "React" },
       { name: "Vite" },
-      { name: "JavaScript" },
+      { name: "Bootstrap" },
       { name: "TypeScript" },
-      { name: "PHP" },
     ],
   },
   {
     title: "Backend & Databases",
     skills: [
       { name: "FastAPI" },
-      { name: "Restful APIs" },
       { name: "MySQL" },
       { name: "MongoDB" },
+      { name: "PHP" },
     ],
   },
   {
-    title: "AI Tools & Libraries",
-    skills: [
-      { name: "TensorFlow" },
-      { name: "PyTorch" },
-      { name: "scikit-learn" },
-      { name: "Pandas" },
-      { name: "NumPy" },
-    ],
-  },
-  {
-    title: "DevOps, Cloud & Version Control",
+    title: "DevOps & System Foundations",
     skills: [
       { name: "Git" },
-      { name: "GitHub" },
       { name: "Docker" },
-      { name: "Vercel" },
-      { name: "Render" },
+      { name: "Operating Systems" },
+      { name: "Computer Networks" },
     ],
   },
-];
+] as const;
 
-// Props
-interface SkillSetProps {
-  skills?: SkillCategory[];
-}
-
-// Animation variants - Enhanced for better UX
+// Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -105,18 +107,16 @@ const containerVariants = {
       delayChildren: 0.2,
     },
   },
-};
+} as const;
 
 const categoryVariants = {
   hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.7,
-    },
+    transition: { duration: 0.7 },
   },
-};
+} as const;
 
 const skillVariants = {
   hidden: { opacity: 0, scale: 0.92, y: 8 },
@@ -124,21 +124,16 @@ const skillVariants = {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: {
-      duration: 0.5,
-    },
+    transition: { duration: 0.5 },
   },
-};
+} as const;
 
 // Component
 const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
   return (
-    <section
-      id="skills"
-      className="py-20 md:py-32 relative overflow-hidden"
-    >
+    <section id="skills" className="py-20 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6">
-        {/* Header */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -158,7 +153,7 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
           </p>
         </motion.div>
 
-        {/* Skills by Category - 2 Column Layout */}
+        {/* Skills Grid - 2 Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-20">
           {skills.map((category, categoryIndex) => (
             <motion.div
@@ -172,7 +167,7 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
               viewport={{ once: true, margin: "-50px" }}
               className="space-y-10"
             >
-              {/* Category Header - Minimalist Design */}
+              {/* Category Header */}
               <div className="relative">
                 <motion.div
                   initial={{ width: 0, opacity: 0 }}
@@ -184,7 +179,7 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
                   viewport={{ once: true }}
                   className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-foreground/0 via-foreground/15 to-foreground/0"
                 />
-                <motion.h3 
+                <motion.h3
                   initial={{ opacity: 0, x: -12 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{
@@ -210,7 +205,7 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
                 </motion.h3>
               </div>
 
-              {/* Skills Grid - Flex Layout */}
+              {/* Skills Container */}
               <motion.div
                 variants={containerVariants}
                 initial="hidden"
@@ -218,14 +213,14 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
                 viewport={{ once: true, margin: "-30px" }}
                 className="flex flex-wrap gap-3"
               >
-                {category.skills.map((skill, skillIndex) => (
+                {category.skills.map((skill) => (
                   <motion.div
                     key={skill.name}
                     variants={skillVariants}
-                    whileHover={{ 
-                      scale: 1.08, 
+                    whileHover={{
+                      scale: 1.08,
                       y: -4,
-                      transition: { duration: 0.2 }
+                      transition: { duration: 0.2 },
                     }}
                     whileTap={{ scale: 0.96 }}
                     className="group"
@@ -243,7 +238,7 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
         </div>
       </div>
 
-      {/* Subtle background decoration - minimal */}
+      {/* Background Decoration */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute top-1/3 right-0 w-72 h-72 bg-primary/2 rounded-full blur-3xl" />
         <div className="absolute bottom-1/3 left-0 w-64 h-64 bg-accent/2 rounded-full blur-3xl" />
