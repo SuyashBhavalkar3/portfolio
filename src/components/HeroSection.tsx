@@ -63,19 +63,16 @@ const NetworkNode = ({
     >
       {/* Label Badge */}
       <motion.div
-        animate={{
-          opacity: isNear ? 1 : 0.8,
-          scale: isNear ? 1.1 : 1,
-        }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0.6, scale: 0.9 }}
+        animate={{ opacity: 0.7, scale: 1 }}
+        transition={{ duration: 0.8 }}
+        whileHover={{ opacity: 1, scale: 1.15 }}
         className="px-3 py-1.5 rounded-full text-[8px] font-semibold whitespace-nowrap mb-2 uppercase tracking-wide"
         style={{
-          background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.85))",
-          color: "hsl(var(--background))",
-          border: "1px solid hsl(var(--primary) / 0.4)",
-          boxShadow: isNear
-            ? "0 0 16px hsl(var(--primary) / 0.6), 0 0 32px hsl(var(--primary) / 0.3), inset 0 1px 2px hsl(var(--primary) / 0.3)"
-            : "0 0 12px hsl(var(--primary) / 0.4), 0 0 24px hsl(var(--primary) / 0.15), inset 0 1px 2px hsl(var(--primary) / 0.3)",
+          background: "linear-gradient(135deg, hsl(var(--primary) / 0.6), hsl(var(--primary) / 0.5))",
+          color: "hsl(var(--foreground))",
+          border: "1px solid hsl(var(--primary) / 0.3)",
+          boxShadow: "0 0 8px hsl(var(--primary) / 0.2), inset 0 1px 2px hsl(var(--primary) / 0.15)",
           backdropFilter: "blur(8px)",
         }}
       >
@@ -84,16 +81,17 @@ const NetworkNode = ({
 
       {/* Animated Dot */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 0.4, scale: 0.8 }}
         animate={{
-          opacity: [0.3, 0.6, 0.3],
-          scale: isNear ? 1.3 : 1,
+          opacity: [0.4, 0.5, 0.4],
+          scale: 1,
         }}
+        whileHover={{ scale: 1.5, opacity: 0.8 }}
         transition={{
           opacity: { duration: 4, delay, repeat: Infinity },
           scale: { duration: 0.3 },
         }}
-        className="w-2 h-2 rounded-full bg-primary"
+        className="w-2 h-2 rounded-full bg-primary/70"
       />
     </motion.div>
   );
@@ -287,9 +285,11 @@ export function HeroSection() {
 
 
             {/* Animated network nodes with mouse repulsion */}
+            {/* Modern Circular Personality Network - 6 Core Traits */}
+            {/* Arranged in a modern hexagonal orbit pattern */}
             <NetworkNode 
-              x={20} 
-              y={20} 
+              x={50} 
+              y={15} 
               delay={0} 
               label="Resilient" 
               mouseX={mousePosition.x} 
@@ -300,21 +300,9 @@ export function HeroSection() {
               containerHeight={320} 
             />
             <NetworkNode 
-              x={80} 
-              y={25} 
-              delay={0.3} 
-              label="Curious" 
-              mouseX={mousePosition.x} 
-              mouseY={mousePosition.y} 
-              containerX={containerBounds.left} 
-              containerY={containerBounds.top} 
-              containerWidth={320} 
-              containerHeight={320} 
-            />
-            <NetworkNode 
-              x={70} 
-              y={80} 
-              delay={0.6} 
+              x={78} 
+              y={27} 
+              delay={0.2} 
               label="Proactive" 
               mouseX={mousePosition.x} 
               mouseY={mousePosition.y} 
@@ -324,10 +312,10 @@ export function HeroSection() {
               containerHeight={320} 
             />
             <NetworkNode 
-              x={25} 
-              y={75} 
-              delay={0.9} 
-              label="Adaptive" 
+              x={82} 
+              y={60} 
+              delay={0.4} 
+              label="Innovative" 
               mouseX={mousePosition.x} 
               mouseY={mousePosition.y} 
               containerX={containerBounds.left} 
@@ -337,8 +325,8 @@ export function HeroSection() {
             />
             <NetworkNode 
               x={50} 
-              y={50} 
-              delay={1.2} 
+              y={85} 
+              delay={0.6} 
               label="Collaborative" 
               mouseX={mousePosition.x} 
               mouseY={mousePosition.y} 
@@ -347,13 +335,44 @@ export function HeroSection() {
               containerWidth={320} 
               containerHeight={320} 
             />
+            <NetworkNode 
+              x={18} 
+              y={60} 
+              delay={0.8} 
+              label="Detail-Oriented" 
+              mouseX={mousePosition.x} 
+              mouseY={mousePosition.y} 
+              containerX={containerBounds.left} 
+              containerY={containerBounds.top} 
+              containerWidth={320} 
+              containerHeight={320} 
+            />
+            <NetworkNode 
+              x={22} 
+              y={27} 
+              delay={1.0} 
+              label="Problem Solver" 
+              mouseX={mousePosition.x} 
+              mouseY={mousePosition.y} 
+              containerX={containerBounds.left} 
+              containerY={containerBounds.top} 
+              containerWidth={320} 
+              containerHeight={320} 
+            />
 
-            {/* Connecting lines - abstract network visualization */}
-            <NetworkLine x1={20} y1={20} x2={50} y2={50} delay={0} />
-            <NetworkLine x1={80} y1={25} x2={50} y2={50} delay={0.2} />
-            <NetworkLine x1={70} y1={80} x2={50} y2={50} delay={0.4} />
-            <NetworkLine x1={25} y1={75} x2={50} y2={50} delay={0.6} />
-            <NetworkLine x1={20} y1={20} x2={80} y2={25} delay={0.8} />
+            {/* Modern orbital network connections */}
+            {/* Hexagon outer ring */}
+            <NetworkLine x1={50} y1={15} x2={78} y2={27} delay={0} />
+            <NetworkLine x1={78} y1={27} x2={82} y2={60} delay={0.15} />
+            <NetworkLine x1={82} y1={60} x2={50} y2={85} delay={0.3} />
+            <NetworkLine x1={50} y1={85} x2={18} y2={60} delay={0.45} />
+            <NetworkLine x1={18} y1={60} x2={22} y2={27} delay={0.6} />
+            <NetworkLine x1={22} y1={27} x2={50} y2={15} delay={0.75} />
+            
+            {/* Cross connections to center for modern effect */}
+            <NetworkLine x1={50} y1={15} x2={50} y2={50} delay={0.9} />
+            <NetworkLine x1={78} y1={27} x2={50} y2={50} delay={1.0} />
+            <NetworkLine x1={82} y1={60} x2={50} y2={50} delay={1.1} />
 
             {/* Central pulsing core */}
             <motion.div
