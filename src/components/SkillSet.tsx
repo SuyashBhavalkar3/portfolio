@@ -103,8 +103,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
+      staggerChildren: 0.02,
+      delayChildren: 0,
     },
   },
 } as const;
@@ -161,8 +161,8 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{
-                duration: 0.6,
-                delay: categoryIndex * 0.12,
+                duration: 0.4,
+                delay: categoryIndex * 0.04,
               }}
               viewport={{ once: true, margin: "-50px" }}
               className="space-y-10"
@@ -173,8 +173,8 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
                   initial={{ width: 0, opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   transition={{
-                    delay: categoryIndex * 0.12 + 0.05,
-                    duration: 0.8,
+                    delay: categoryIndex * 0.04,
+                    duration: 0.5,
                   }}
                   viewport={{ once: true }}
                   className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-foreground/0 via-foreground/15 to-foreground/0"
@@ -183,8 +183,8 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
                   initial={{ opacity: 0, x: -12 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{
-                    delay: categoryIndex * 0.12,
-                    duration: 0.6,
+                    delay: categoryIndex * 0.04,
+                    duration: 0.4,
                   }}
                   viewport={{ once: true }}
                   className="text-base md:text-lg font-semibold text-foreground/85 tracking-wide uppercase relative"
@@ -195,8 +195,8 @@ const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
                       initial={{ width: 0, opacity: 0 }}
                       whileInView={{ width: "100%", opacity: 1 }}
                       transition={{
-                        delay: categoryIndex * 0.12 + 0.15,
-                        duration: 0.7,
+                        delay: categoryIndex * 0.04 + 0.05,
+                        duration: 0.4,
                       }}
                       viewport={{ once: true }}
                       className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary/40 via-primary/60 to-primary/40"
