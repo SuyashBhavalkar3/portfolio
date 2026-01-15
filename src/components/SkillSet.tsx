@@ -103,8 +103,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.2,
+      staggerChildren: 0.03,
+      delayChildren: 0.1,
     },
   },
 } as const;
@@ -114,7 +114,7 @@ const categoryVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7 },
+    transition: { duration: 0.5 },
   },
 } as const;
 
@@ -124,7 +124,7 @@ const skillVariants = {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { duration: 0.5 },
+    transition: { duration: 0.3 },
   },
 } as const;
 
