@@ -1,54 +1,87 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import { useState, useRef } from "react";
 // import myImage from "../../../Images/image.png";
 import myImage from "/img.jpeg";
-
-// Animated neural network nodes
-// const NetworkNode = ({ x, y, delay }: { x: number; y: number; delay: number }) => (
-//   <motion.div
-//     initial={{ opacity: 0 }}
-//     animate={{ opacity: [0.3, 0.6, 0.3] }}
-//     transition={{ duration: 4, delay, repeat: Infinity }}
-//     className="absolute w-2 h-2 rounded-full bg-primary"
-//     style={{ left: `${x}%`, top: `${y}%` }}
-//   />
-// );
 
 type NetworkNodeProps = {
   x: number;
   y: number;
   delay: number;
   label: string;
+  mouseX?: number;
+  mouseY?: number;
+  containerX?: number;
+  containerY?: number;
+  containerWidth?: number;
+  containerHeight?: number;
 };
 
-const NetworkNode = ({ x, y, delay, label }: NetworkNodeProps) => (
-  <div
-    className="absolute flex flex-col items-center"
-    style={{ left: `${x}%`, top: `${y}%`, transform: "translateX(-50%)" }}
-  >
-    {/* Label Badge - Positioned Above - Always Bright */}
-    <div
-      className="px-3 py-1.5 rounded-full text-[8px] font-semibold whitespace-nowrap mb-2 uppercase tracking-wide"
-      style={{
-        background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.85))",
-        color: "hsl(var(--background))",
-        border: "1px solid hsl(var(--primary) / 0.4)",
-        boxShadow: "0 0 12px hsl(var(--primary) / 0.4), 0 0 24px hsl(var(--primary) / 0.15), inset 0 1px 2px hsl(var(--primary) / 0.3)",
-        backdropFilter: "blur(8px)",
-      }}
-    >
-      {label}
-    </div>
+const NetworkNode = ({ x, y, delay, label, mouseX = 0, mouseY = 0, containerX = 0, containerY = 0, containerWidth = 320, containerHeight = 320 }: NetworkNodeProps) => {
+  // Calculate distance from mouse to node
+  const nodeAbsX = (containerX) + (containerWidth * x / 100);
+  const nodeAbsY = (containerY) + (containerHeight * y / 100);
+  
+  const distance = Math.sqrt(
+    Math.pow(mouseX - nodeAbsX, 2) + Math.pow(mouseY - nodeAbsY, 2)
+  );
+  
+  const maxDistance = 120;
+  const isNear = distance < maxDistance;
+  const influence = Math.max(0, 1 - distance / maxDistance);
+  
+  // Calculate push direction
+  const angle = Math.atan2(nodeAbsY - mouseY, nodeAbsX - mouseX);
+  const pushX = isNear ? Math.cos(angle) * influence * 20 : 0;
+  const pushY = isNear ? Math.sin(angle) * influence * 20 : 0;
 
-    {/* Dot - Fade Animation */}
+  return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [0.3, 0.6, 0.3] }}
-      transition={{ duration: 4, delay, repeat: Infinity }}
-      className="w-2 h-2 rounded-full bg-primary"
-    />
-  </div>
-);
+      animate={{
+        x: pushX,
+        y: pushY,
+      }}
+      transition={{ type: "spring", stiffness: 150, damping: 15 }}
+      className="absolute flex flex-col items-center"
+      style={{ left: `${x}%`, top: `${y}%`, transform: "translateX(-50%)" }}
+    >
+      {/* Label Badge - Positioned Above - Always Bright */}
+      <motion.div
+        animate={{
+          opacity: isNear ? 1 : 0.8,
+          scale: isNear ? 1.1 : 1,
+        }}
+        transition={{ duration: 0.3 }}
+        className="px-3 py-1.5 rounded-full text-[8px] font-semibold whitespace-nowrap mb-2 uppercase tracking-wide"
+        style={{
+          background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.85))",
+          color: "hsl(var(--background))",
+          border: "1px solid hsl(var(--primary) / 0.4)",
+          boxShadow: isNear 
+            ? "0 0 16px hsl(var(--primary) / 0.6), 0 0 32px hsl(var(--primary) / 0.3), inset 0 1px 2px hsl(var(--primary) / 0.3)"
+            : "0 0 12px hsl(var(--primary) / 0.4), 0 0 24px hsl(var(--primary) / 0.15), inset 0 1px 2px hsl(var(--primary) / 0.3)",
+          backdropFilter: "blur(8px)",
+        }}
+      >
+        {label}
+      </motion.div>
+
+      {/* Dot - Fade Animation */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: [0.3, 0.6, 0.3],
+          scale: isNear ? 1.3 : 1,
+        }}
+        transition={{ 
+          opacity: { duration: 4, delay, repeat: Infinity },
+          scale: { duration: 0.3 }
+        }}
+        className="w-2 h-2 rounded-full bg-primary"
+      />
+    </motion.div>
+  );
+};
 
 // Connecting lines between nodes
 const NetworkLine = ({ x1, y1, x2, y2, delay }: { x1: number; y1: number; x2: number; y2: number; delay: number }) => (
@@ -120,6 +153,23 @@ const DataStream = ({ delay, duration }: { delay: number; duration: number }) =>
 );
 
 export function HeroSection() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const visualizationRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (visualizationRef.current) {
+      const rect = visualizationRef.current.getBoundingClientRect();
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY,
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setMousePosition({ x: -1000, y: -1000 }); // Move cursor far away to reset
+  };
+
   return (
     <section id="about" className="min-h-screen flex items-center justify-center pt-20">
       <div className="container mx-auto px-6">
@@ -186,10 +236,13 @@ export function HeroSection() {
 
           {/* Right Side - Abstract Tech Visualization */}
           <motion.div
+            ref={visualizationRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="hidden lg:block relative w-80 h-80 flex-shrink-0"
+            className="hidden lg:block relative w-80 h-80 flex-shrink-0 cursor-pointer"
           >
             {/* Circular background with subtle gradient */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/5 via-transparent to-accent/5 border border-primary/10" />
@@ -210,12 +263,12 @@ export function HeroSection() {
               <circle cx="160" cy="160" r="160" fill="url(#grid)" />
             </motion.svg>
 
-            {/* Animated network nodes */}
-            <NetworkNode x={20} y={20} delay={0} label="Resilient" />
-            <NetworkNode x={80} y={25} delay={0.3} label="Curious" />
-            <NetworkNode x={70} y={80} delay={0.6} label="Proactive" />
-            <NetworkNode x={25} y={75} delay={0.9} label="Adaptive" />
-            <NetworkNode x={50} y={50} delay={1.2} label="Collaborative" />
+            {/* Animated network nodes with hover interaction */}
+            <NetworkNode x={20} y={20} delay={0} label="Resilient" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
+            <NetworkNode x={80} y={25} delay={0.3} label="Curious" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
+            <NetworkNode x={70} y={80} delay={0.6} label="Proactive" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
+            <NetworkNode x={25} y={75} delay={0.9} label="Adaptive" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
+            <NetworkNode x={50} y={50} delay={1.2} label="Collaborative" mouseX={mousePosition.x} mouseY={mousePosition.y} containerX={visualizationRef.current?.getBoundingClientRect().left || 0} containerY={visualizationRef.current?.getBoundingClientRect().top || 0} containerWidth={320} containerHeight={320} />
 
 
             {/* Connecting lines - abstract network visualization */}
