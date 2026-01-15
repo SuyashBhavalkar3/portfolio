@@ -1,19 +1,135 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 // import myImage from "../../../Images/image.png";
-import myImage from "../../public/img.jpeg";
+import myImage from "/img.jpeg";
+
+// Animated neural network nodes
+// const NetworkNode = ({ x, y, delay }: { x: number; y: number; delay: number }) => (
+//   <motion.div
+//     initial={{ opacity: 0 }}
+//     animate={{ opacity: [0.3, 0.6, 0.3] }}
+//     transition={{ duration: 4, delay, repeat: Infinity }}
+//     className="absolute w-2 h-2 rounded-full bg-primary"
+//     style={{ left: `${x}%`, top: `${y}%` }}
+//   />
+// );
+
+type NetworkNodeProps = {
+  x: number;
+  y: number;
+  delay: number;
+  label: string;
+};
+
+const NetworkNode = ({ x, y, delay, label }: NetworkNodeProps) => (
+  <div
+    className="absolute flex flex-col items-center"
+    style={{ left: `${x}%`, top: `${y}%`, transform: "translateX(-50%)" }}
+  >
+    {/* Label Badge - Positioned Above - Always Bright */}
+    <div
+      className="px-3 py-1.5 rounded-full text-[8px] font-semibold whitespace-nowrap mb-2 uppercase tracking-wide"
+      style={{
+        background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.85))",
+        color: "hsl(var(--background))",
+        border: "1px solid hsl(var(--primary) / 0.4)",
+        boxShadow: "0 0 12px hsl(var(--primary) / 0.4), 0 0 24px hsl(var(--primary) / 0.15), inset 0 1px 2px hsl(var(--primary) / 0.3)",
+        backdropFilter: "blur(8px)",
+      }}
+    >
+      {label}
+    </div>
+
+    {/* Dot - Fade Animation */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0.3, 0.6, 0.3] }}
+      transition={{ duration: 4, delay, repeat: Infinity }}
+      className="w-2 h-2 rounded-full bg-primary"
+    />
+  </div>
+);
+
+// Connecting lines between nodes
+const NetworkLine = ({ x1, y1, x2, y2, delay }: { x1: number; y1: number; x2: number; y2: number; delay: number }) => (
+  <motion.svg
+    initial={{ opacity: 0 }}
+    animate={{ opacity: [0.25, 0.5, 0.25] }}
+    transition={{ duration: 4, delay, repeat: Infinity }}
+    className="absolute w-full h-full"
+    style={{ pointerEvents: "none" }}
+  >
+    <defs>
+      <filter id="lineGlow">
+        <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+        <feMerge>
+          <feMergeNode in="coloredBlur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+    <line
+      x1={`${x1}%`}
+      y1={`${y1}%`}
+      x2={`${x2}%`}
+      y2={`${y2}%`}
+      stroke="hsl(var(--primary))"
+      strokeWidth="1.5"
+      filter="url(#lineGlow)"
+    />
+  </motion.svg>
+);
+
+// Floating geometric element
+const FloatingGeometry = ({ delay, duration }: { delay: number; duration: number }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ 
+      opacity: [0.2, 0.4, 0.2],
+      y: [0, -12, 0],
+      rotate: [0, 360]
+    }}
+    transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
+    className="absolute w-6 h-6 border border-primary/40 rounded-lg"
+    style={{ pointerEvents: "none" }}
+  />
+);
+
+const DataStream = ({ delay, duration }: { delay: number; duration: number }) => (
+  <motion.svg
+    initial={{ opacity: 0 }}
+    animate={{ opacity: [0.15, 0.35, 0.15] }}
+    transition={{ duration: 4, delay, repeat: Infinity }}
+    className="absolute w-full h-full"
+    style={{ pointerEvents: "none" }}
+  >
+    <defs>
+      <linearGradient id="streamGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2" />
+        <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+    <path
+      d="M 30,30 Q 50,50 70,40 T 100,70"
+      stroke="url(#streamGradient)"
+      strokeWidth="2"
+      fill="none"
+      style={{ transform: "translate(0, 0)" }}
+    />
+  </motion.svg>
+);
 
 export function HeroSection() {
   return (
     <section id="about" className="min-h-screen flex items-center justify-center pt-20">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 justify-between w-full">
           {/* Profile Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="relative"
+            className="relative flex-shrink-0 w-full lg:w-auto flex justify-center lg:justify-start"
           >
             <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-border bg-secondary">
               <div className="w-full h-full flex items-center justify-center">
@@ -32,7 +148,7 @@ export function HeroSection() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-center lg:text-left max-w-xl"
+            className="text-center lg:text-left max-w-xl w-full lg:flex-1"
           >
             <p className="text-sm uppercase tracking-widest text-primary font-medium mb-4">
               Welcome to my portfolio
@@ -67,7 +183,92 @@ export function HeroSection() {
               </a>
             </div>
           </motion.div>
+
+          {/* Right Side - Abstract Tech Visualization */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="hidden lg:block relative w-80 h-80 flex-shrink-0"
+          >
+            {/* Circular background with subtle gradient */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/5 via-transparent to-accent/5 border border-primary/10" />
+
+            {/* Abstract grid pattern background */}
+            <motion.svg
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.08 }}
+              transition={{ duration: 1 }}
+              className="absolute inset-0 w-full h-full rounded-full overflow-hidden"
+              style={{ pointerEvents: "none" }}
+            >
+              <defs>
+                <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                  <path d="M 30 0 L 0 0 0 30" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" />
+                </pattern>
+              </defs>
+              <circle cx="160" cy="160" r="160" fill="url(#grid)" />
+            </motion.svg>
+
+            {/* Animated network nodes */}
+            <NetworkNode x={20} y={20} delay={0} label="Resilient" />
+            <NetworkNode x={80} y={25} delay={0.3} label="Curious" />
+            <NetworkNode x={70} y={80} delay={0.6} label="Proactive" />
+            <NetworkNode x={25} y={75} delay={0.9} label="Adaptive" />
+            <NetworkNode x={50} y={50} delay={1.2} label="Collaborative" />
+
+
+            {/* Connecting lines - abstract network visualization */}
+            <NetworkLine x1={20} y1={20} x2={50} y2={50} delay={0} />
+            <NetworkLine x1={80} y1={25} x2={50} y2={50} delay={0.2} />
+            <NetworkLine x1={70} y1={80} x2={50} y2={50} delay={0.4} />
+            <NetworkLine x1={25} y1={75} x2={50} y2={50} delay={0.6} />
+            <NetworkLine x1={20} y1={20} x2={80} y2={25} delay={0.8} />
+
+            {/* Central pulsing core */}
+            <motion.div
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.4, 0.7, 0.4],
+              }}
+              transition={{ duration: 3.5, repeat: Infinity }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/25 border border-primary/50"
+            />
+            <motion.div
+              animate={{
+                scale: [1.4, 1.8, 1.4],
+                opacity: [0.2, 0.05, 0.2],
+              }}
+              transition={{ duration: 3.5, repeat: Infinity }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-primary/30"
+            />
+
+            {/* Floating geometric elements */}
+            <div className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2">
+              <FloatingGeometry delay={0} duration={4} />
+            </div>
+            <div className="absolute top-1/4 right-1/4 transform translate-x-1/2 -translate-y-1/2">
+              <FloatingGeometry delay={0.5} duration={5} />
+            </div>
+            <div className="absolute bottom-1/4 left-1/3 transform -translate-x-1/2 translate-y-1/2">
+              <FloatingGeometry delay={1} duration={4.5} />
+            </div>
+
+            {/* Data stream visualization */}
+            <div className="absolute inset-4">
+              <DataStream delay={0} duration={4} />
+            </div>
+
+            {/* Subtle motion indicator at bottom */}
+            <motion.div
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity }}
+              className="absolute bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary/60"
+            />
+          </motion.div>
         </div>
+
+
 
         {/* Scroll Indicator */}
         <motion.div

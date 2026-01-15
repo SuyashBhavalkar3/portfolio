@@ -7,7 +7,7 @@ export function ResumeSection() {
   const resumeLink = "https://drive.google.com/file/d/1qfipqULfQ6h_8zEo7BopeagOW7drnpsJ/view?pli=1";
 
   return (
-    <section className="py-24 bg-secondary/30" id="resume">
+    <section className="py-24" id="resume">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
