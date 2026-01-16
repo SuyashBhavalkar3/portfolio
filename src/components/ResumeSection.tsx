@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 
 export function ResumeSection() {
   // Replace this with your actual Google Drive resume link
-  const resumeLink = "https://drive.google.com/file/d/1qfipqULfQ6h_8zEo7BopeagOW7drnpsJ/view?pli=1";
+  // const resumeLink = "https://drive.google.com/file/d/1qfipqULfQ6h_8zEo7BopeagOW7drnpsJ/view?pli=1";
+  const resumeLink = "https://drive.google.com/file/d/1q2cmmqHuK7H2heLCRgxzMY_EKr9tCUei/view?usp=sharing"
 
   return (
     <section className="py-24" id="resume">
