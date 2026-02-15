@@ -1,4 +1,4 @@
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, Code } from "lucide-react";
 
 export function Footer() {
   return (
@@ -25,6 +25,14 @@ export function Footer() {
               className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-colors"
             >
               <Linkedin className="w-5 h-5" />
+            </a>
+            <a
+              href="https://leetcode.com/u/suyashbhavalkar3/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-colors"
+            >
+              <Code className="w-5 h-5" />
             </a>
           </div>
         </div>
