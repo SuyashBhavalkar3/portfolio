@@ -8,14 +8,13 @@ const timelineData = [
     type: "work",
     title: "Gen AI Intern",
     organization: "CodeSpyder Technologies Private Limited",
-    period: "Dec 2025 - Present",
+    period: "July 2025 - January 2026",
     description: "Working on generative AI models and their real-world applications. Developed RAG-based systems and agentic AI solutions, including data preparation, model training, and evaluation.",
   },
   {
     type: "work",
     title: "Data Science Intern",
     organization: "Unified IT Solutions",
-    period: "June 2025 - Nov 2025",
     description: "Worked on data analysis and visualization projects.\nEDA data cleaning and preprocessing.Built pipelines for machine learning models.",
   },
   {
