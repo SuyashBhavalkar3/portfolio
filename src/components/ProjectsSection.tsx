@@ -4,6 +4,24 @@ import { Button } from "@/components/ui/button";
 
 const projects = [
   {
+  title: "AI-Driven Autonomous Recruitment & Candidate Assessment System",
+  description: "Developed an AI-powered recruitment platform that automates resume parsing, interview scheduling, and candidate screening using NLP and an adaptive interview bot. Built with FastAPI and React, the system conducts intelligent assessments, ensures unbiased hiring, and generates structured, data-driven reports for faster decision-making.",
+  tags: [
+    "AI",
+    "Recruitment Automation",
+    "NLP",
+    "Conversational AI",
+    "FastAPI",
+    "React",
+    "Python",
+    "WebSockets",
+    "HR Tech",
+    "Machine Learning"
+  ],
+  github: "https://github.com/SuyashBhavalkar3/AI-Driven-Autonomous-Recruitment-and-Candidate-Assesment-System",
+  demo: "https://ai-driven-autonomous-recruitment-an.vercel.app/",
+  },
+  {
     title: "Autonomous Generative AI Agent for Presentation Creation",
     description: "Built an autonomous generative AI system that converts natural language prompts into professional PowerPoint presentations. Designed an agentic workflow using LangGraph with a Dockerized FastAPI backend for slide generation and image rendering, and a responsive React frontend for user interaction and file downloads. Enables fully automated, scalable, and production-ready presentation creation for business and academic use cases.",
     tags: [
@@ -91,6 +109,24 @@ const projects = [
     github: "https://github.com/SuyashBhavalkar3/CryptoLock-Text_encryption_using_cryptographic_algorithms",
     demo: "https://crypto-lock-text-encryption-using-c.vercel.app/",
   },
+  {
+  title: "Hacktrack – Farmer Legal & Policy Assistant",
+  description: "Built an AI-powered chatbot platform to assist farmers with government schemes, crop insurance, and agricultural laws using RAG-based retrieval and LLMs. Developed with FastAPI and React/Vite, the system supports multilingual queries, PDF document analysis, and secure JWT-based authentication for seamless advisory access.",
+  tags: [
+    "AI",
+    "RAG",
+    "Langchain",
+    "FastAPI",
+    "React",
+    "TypeScript",
+    "JWT Authentication",
+    "Multilingual NLP",
+    "FAISS",
+    "AgriTech"
+  ],
+  github: "https://github.com/SuyashBhavalkar3/AI-Based-Farmer-Advisory-Chatbot-For-HackTrack-SKNIEEE-Hackathon",
+  demo: "https://github.com/SuyashBhavalkar3/AI-Based-Farmer-Advisory-Chatbot-For-HackTrack-SKNIEEE-Hackathon",
+  }
 ];
 
 export function ProjectsSection() {
