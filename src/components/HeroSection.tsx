@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import { useState, useRef, useCallback, useMemo } from "react";
-import myImage from "/img.jpeg";
+import { useState, useRef, useCallback, useMemo, useEffect } from "react";
 
 /**
  * HeroSection Component
@@ -97,18 +96,52 @@ const NetworkNode = ({
   );
 };
 
-// Connecting lines between nodes
+// Glowing pulse that travels along network lines
+const NetworkPulse = ({ x1, y1, x2, y2, delay }: { x1: number; y1: number; x2: number; y2: number; delay: number }) => {
+  const px1 = (x1 * 320) / 100;
+  const py1 = (y1 * 320) / 100;
+  const px2 = (x2 * 320) / 100;
+  const py2 = (y2 * 320) / 100;
+
+  return (
+    <motion.svg
+      className="absolute w-full h-full pointer-events-none"
+      style={{ zIndex: 1 }}
+    >
+      <motion.circle
+        r="2"
+        fill="hsl(var(--primary))"
+        style={{
+          offsetPath: `path('M ${px1} ${py1} L ${px2} ${py2}')`,
+          filter: "blur(1px) drop-shadow(0 0 4px hsl(var(--primary)))"
+        }}
+        animate={{ 
+          offsetDistance: ["0%", "100%"],
+          opacity: [0, 1, 0]
+        }}
+        transition={{ 
+          duration: 2.5, 
+          delay, 
+          repeat: Infinity, 
+          ease: "linear" 
+        }}
+      />
+    </motion.svg>
+  );
+};
+
+// Connecting lines between nodes with enhanced glow
 const NetworkLine = ({ x1, y1, x2, y2, delay }: { x1: number; y1: number; x2: number; y2: number; delay: number }) => (
   <motion.svg
     initial={{ opacity: 0 }}
-    animate={{ opacity: [0.25, 0.5, 0.25] }}
+    animate={{ opacity: [0.15, 0.3, 0.15] }}
     transition={{ duration: 4, delay, repeat: Infinity }}
     className="absolute w-full h-full"
     style={{ pointerEvents: "none" }}
   >
     <defs>
       <filter id="lineGlow">
-        <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+        <feGaussianBlur stdDeviation="1" result="coloredBlur" />
         <feMerge>
           <feMergeNode in="coloredBlur" />
           <feMergeNode in="SourceGraphic" />
@@ -121,8 +154,10 @@ const NetworkLine = ({ x1, y1, x2, y2, delay }: { x1: number; y1: number; x2: nu
       x2={`${x2}%`}
       y2={`${y2}%`}
       stroke="hsl(var(--primary))"
-      strokeWidth="1.5"
+      strokeWidth="0.8"
+      strokeDasharray="4 4"
       filter="url(#lineGlow)"
+      className="opacity-40"
     />
   </motion.svg>
 );
@@ -166,6 +201,146 @@ const DataStream = ({ delay, duration }: { delay: number; duration: number }) =>
   </motion.svg>
 );
 
+// Inner Terminal Animation for the Developer Core
+const TerminalCore = () => {
+  const [logs, setLogs] = useState<string[]>([]);
+  const allLogs = useMemo(() => [
+    "system.init()",
+    "load_suyash.profile",
+    "creative_mode = true",
+    "exec innov_logic",
+    "status: building...",
+    "ui_ux.optimize()",
+    "npm install future",
+    "git_push.main()",
+    "fullstack.scale()",
+    "design.polish()"
+  ], []);
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setLogs(prev => {
+        const nextLog = allLogs[i % allLogs.length];
+        return [...prev.slice(-4), nextLog];
+      });
+      i++;
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [allLogs]);
+
+  return (
+    <div className="font-mono text-[9px] md:text-[10px] text-primary/80 leading-relaxed font-medium">
+      {logs.map((log, idx) => (
+        <div key={`${log}-${idx}`} className="flex gap-2 min-h-[1.5em]">
+          <span className="opacity-40 select-none">$</span>
+          <motion.span
+            initial={{ opacity: 0, x: -5 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {log}
+          </motion.span>
+        </div>
+      ))}
+      <motion.span
+        animate={{ opacity: [1, 0] }}
+        transition={{ duration: 0.8, repeat: Infinity }}
+        className="inline-block w-1.5 h-3 bg-primary ml-1 align-middle"
+      />
+    </div>
+  );
+};
+
+// Developer Core Visualization - Replaces Profile Photo
+const DeveloperCore = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6 }}
+      className="relative flex-shrink-0 w-full lg:w-auto flex justify-center lg:justify-start"
+    >
+      <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center group">
+        {/* Outer Rotating Scan Ring */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full border border-primary/20 border-dashed"
+        />
+        
+        {/* Middle Pulse Ring */}
+        <motion.div
+          animate={{ 
+            scale: [1, 1.05, 1],
+            opacity: [0.1, 0.2, 0.1]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-4 rounded-full border-2 border-primary/30"
+        />
+
+        {/* Inner Data Flow Ring */}
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-8 rounded-full border border-primary/10 flex items-center justify-center"
+        >
+           <div className="w-full h-full rounded-full border-t-2 border-primary/40 opacity-20" />
+        </motion.div>
+
+        {/* Main Glassmorphic Central Hub */}
+        <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full bg-secondary/20 backdrop-blur-xl border border-primary/20 overflow-hidden flex flex-col items-center justify-center p-6 shadow-[inset_0_0_20px_rgba(var(--primary),0.1)] group-hover:border-primary/40 transition-colors duration-500">
+          {/* Subtle Scanline Effect */}
+          <div className="absolute inset-0 bg-[linear-gradient(transparent_0%,rgba(var(--primary),0.05)_50%,transparent_100%)] bg-[length:100%_4px] animate-[scanline_10s_linear_infinite] pointer-events-none opacity-20" />
+          
+          {/* Internal Glow */}
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent pointer-events-none" />
+          
+          <TerminalCore />
+          
+          <div className="mt-4 w-2/3 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          
+          <div className="mt-3 flex flex-col items-center">
+            <span className="text-[8px] font-bold text-primary tracking-[0.2em] uppercase opacity-40 mb-1">
+              System Core
+            </span>
+            <div className="flex gap-1.5">
+              {[1, 2, 3].map((i) => (
+                <motion.div
+                  key={i}
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1.5, delay: i * 0.3, repeat: Infinity }}
+                  className="w-1 h-1 rounded-full bg-primary"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* External Interaction Dots */}
+        {[0, 72, 144, 216, 288].map((angle, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1.5 h-1.5 rounded-full bg-primary/40"
+            style={{
+              left: `${50 + 46 * Math.cos((angle * Math.PI) / 180)}%`,
+              top: `${50 + 46 * Math.sin((angle * Math.PI) / 180)}%`,
+            }}
+            animate={{ 
+              scale: [1, 1.5, 1],
+              opacity: [0.4, 0.8, 0.4]
+            }}
+            transition={{ duration: 3, delay: i * 0.5, repeat: Infinity }}
+          />
+        ))}
+
+        {/* Floating Background Glow */}
+        <div className="absolute -inset-4 bg-primary/5 rounded-full blur-3xl -z-10 group-hover:bg-primary/10 transition-colors duration-500" />
+      </div>
+    </motion.div>
+  );
+};
+
 export function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const visualizationRef = useRef<HTMLDivElement>(null);
@@ -196,22 +371,8 @@ export function HeroSection() {
     <section id="about" className="min-h-screen flex items-center justify-center pt-20">
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 justify-between w-full">
-          {/* Profile Image Section */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="relative flex-shrink-0 w-full lg:w-auto flex justify-center lg:justify-start"
-          >
-            <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-border bg-secondary">
-              <img
-                src={myImage}
-                className="w-full h-full object-cover"
-                alt="Profile picture"
-              />
-            </div>
-            <div className="absolute -bottom-2 -right-2 w-24 h-24 rounded-full bg-primary/10" />
-          </motion.div>
+          {/* Profile Section Replacement */}
+          <DeveloperCore />
 
           {/* Content Section */}
           <motion.div
@@ -220,9 +381,6 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-center lg:text-left max-w-xl w-full lg:flex-1"
           >
-            <p className="text-sm uppercase tracking-widest text-primary font-medium mb-4">
-              Welcome to my portfolio
-            </p>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground mb-6 leading-tight">
               Hello, I'm <br />
               <span className="text-primary">Suyash Bhavalkar</span>
@@ -286,111 +444,103 @@ export function HeroSection() {
 
             {/* Animated network nodes with mouse repulsion */}
             {/* Modern Circular Personality Network - 6 Core Traits */}
-            {/* Arranged in a modern hexagonal orbit pattern */}
             <NetworkNode 
-              x={50} 
-              y={15} 
-              delay={0} 
-              label="Resilient" 
-              mouseX={mousePosition.x} 
-              mouseY={mousePosition.y} 
-              containerX={containerBounds.left} 
-              containerY={containerBounds.top} 
-              containerWidth={320} 
-              containerHeight={320} 
+              x={50} y={15} delay={0} label="Resilient" 
+              mouseX={mousePosition.x} mouseY={mousePosition.y} 
+              containerX={containerBounds.left} containerY={containerBounds.top} 
+              containerWidth={320} containerHeight={320} 
             />
             <NetworkNode 
-              x={78} 
-              y={27} 
-              delay={0.2} 
-              label="Proactive" 
-              mouseX={mousePosition.x} 
-              mouseY={mousePosition.y} 
-              containerX={containerBounds.left} 
-              containerY={containerBounds.top} 
-              containerWidth={320} 
-              containerHeight={320} 
+              x={78} y={27} delay={0.2} label="Proactive" 
+              mouseX={mousePosition.x} mouseY={mousePosition.y} 
+              containerX={containerBounds.left} containerY={containerBounds.top} 
+              containerWidth={320} containerHeight={320} 
             />
             <NetworkNode 
-              x={82} 
-              y={60} 
-              delay={0.4} 
-              label="Innovative" 
-              mouseX={mousePosition.x} 
-              mouseY={mousePosition.y} 
-              containerX={containerBounds.left} 
-              containerY={containerBounds.top} 
-              containerWidth={320} 
-              containerHeight={320} 
+              x={82} y={60} delay={0.4} label="Innovative" 
+              mouseX={mousePosition.x} mouseY={mousePosition.y} 
+              containerX={containerBounds.left} containerY={containerBounds.top} 
+              containerWidth={320} containerHeight={320} 
             />
             <NetworkNode 
-              x={50} 
-              y={85} 
-              delay={0.6} 
-              label="Collaborative" 
-              mouseX={mousePosition.x} 
-              mouseY={mousePosition.y} 
-              containerX={containerBounds.left} 
-              containerY={containerBounds.top} 
-              containerWidth={320} 
-              containerHeight={320} 
+              x={50} y={85} delay={0.6} label="Collaborative" 
+              mouseX={mousePosition.x} mouseY={mousePosition.y} 
+              containerX={containerBounds.left} containerY={containerBounds.top} 
+              containerWidth={320} containerHeight={320} 
             />
             <NetworkNode 
-              x={18} 
-              y={60} 
-              delay={0.8} 
-              label="Detail-Oriented" 
-              mouseX={mousePosition.x} 
-              mouseY={mousePosition.y} 
-              containerX={containerBounds.left} 
-              containerY={containerBounds.top} 
-              containerWidth={320} 
-              containerHeight={320} 
+              x={18} y={60} delay={0.8} label="Detail-Oriented" 
+              mouseX={mousePosition.x} mouseY={mousePosition.y} 
+              containerX={containerBounds.left} containerY={containerBounds.top} 
+              containerWidth={320} containerHeight={320} 
             />
             <NetworkNode 
-              x={22} 
-              y={27} 
-              delay={1.0} 
-              label="Problem Solver" 
-              mouseX={mousePosition.x} 
-              mouseY={mousePosition.y} 
-              containerX={containerBounds.left} 
-              containerY={containerBounds.top} 
-              containerWidth={320} 
-              containerHeight={320} 
+              x={22} y={27} delay={1.0} label="Problem Solver" 
+              mouseX={mousePosition.x} mouseY={mousePosition.y} 
+              containerX={containerBounds.left} containerY={containerBounds.top} 
+              containerWidth={320} containerHeight={320} 
             />
 
-            {/* Modern orbital network connections */}
-            {/* Hexagon outer ring */}
+            {/* Network Connections with Data Pulses */}
+            {/* Outer ring */}
             <NetworkLine x1={50} y1={15} x2={78} y2={27} delay={0} />
-            <NetworkLine x1={78} y1={27} x2={82} y2={60} delay={0.15} />
-            <NetworkLine x1={82} y1={60} x2={50} y2={85} delay={0.3} />
-            <NetworkLine x1={50} y1={85} x2={18} y2={60} delay={0.45} />
-            <NetworkLine x1={18} y1={60} x2={22} y2={27} delay={0.6} />
-            <NetworkLine x1={22} y1={27} x2={50} y2={15} delay={0.75} />
+            <NetworkPulse x1={50} y1={15} x2={78} y2={27} delay={0} />
             
-            {/* Cross connections to center for modern effect */}
+            <NetworkLine x1={78} y1={27} x2={82} y2={60} delay={0.15} />
+            <NetworkPulse x1={78} y1={27} x2={82} y2={60} delay={1.5} />
+            
+            <NetworkLine x1={82} y1={60} x2={50} y2={85} delay={0.3} />
+            <NetworkPulse x1={82} y1={60} x2={50} y2={85} delay={0.8} />
+            
+            <NetworkLine x1={50} y1={85} x2={18} y2={60} delay={0.45} />
+            <NetworkPulse x1={50} y1={85} x2={18} y2={60} delay={2.2} />
+            
+            <NetworkLine x1={18} y1={60} x2={22} y2={27} delay={0.6} />
+            <NetworkPulse x1={18} y1={60} x2={22} y2={27} delay={1.2} />
+            
+            <NetworkLine x1={22} y1={27} x2={50} y2={15} delay={0.75} />
+            <NetworkPulse x1={22} y1={27} x2={50} y2={15} delay={0.5} />
+            
+            {/* Cross connections to center */}
             <NetworkLine x1={50} y1={15} x2={50} y2={50} delay={0.9} />
+            <NetworkPulse x1={50} y1={15} x2={50} y2={50} delay={1.8} />
+            
             <NetworkLine x1={78} y1={27} x2={50} y2={50} delay={1.0} />
+            <NetworkPulse x1={78} y1={27} x2={50} y2={50} delay={0.3} />
+            
             <NetworkLine x1={82} y1={60} x2={50} y2={50} delay={1.1} />
+            <NetworkPulse x1={82} y1={60} x2={50} y2={50} delay={2.5} />
+
+            <NetworkLine x1={18} y1={60} x2={50} y2={50} delay={1.2} />
+            <NetworkPulse x1={18} y1={60} x2={50} y2={50} delay={1.0} />
 
             {/* Central pulsing core */}
             <motion.div
               animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.4, 0.7, 0.4],
+                scale: [1, 1.4, 1],
+                opacity: [0.3, 0.8, 0.3],
+                boxShadow: [
+                  "0 0 0px hsl(var(--primary) / 0)",
+                  "0 0 30px hsl(var(--primary) / 0.4)",
+                  "0 0 0px hsl(var(--primary) / 0)"
+                ]
               }}
-              transition={{ duration: 3.5, repeat: Infinity }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/25 border border-primary/50"
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-primary/30 border border-primary/60 z-10"
             />
-            <motion.div
-              animate={{
-                scale: [1.4, 1.8, 1.4],
-                opacity: [0.2, 0.05, 0.2],
-              }}
-              transition={{ duration: 3.5, repeat: Infinity }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-primary/30"
-            />
+            
+            {/* Energy Ripples */}
+            {[1, 2].map((i) => (
+              <motion.div
+                key={i}
+                animate={{
+                  scale: [1, 2.5],
+                  opacity: [0.5, 0],
+                }}
+                transition={{ duration: 3, delay: i * 1.5, repeat: Infinity, ease: "easeOut" }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full border border-primary/40 pointer-events-none"
+              />
+            ))}
 
             {/* Floating geometric elements */}
             <div className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2">

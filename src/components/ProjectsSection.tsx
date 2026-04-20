@@ -4,151 +4,79 @@ import { Button } from "@/components/ui/button";
 
 const projects = [
   {
-  title: "AI-Driven Autonomous Recruitment & Candidate Assessment System",
-  description: "Developed an AI-powered recruitment platform that automates resume parsing, interview scheduling, and candidate screening using NLP and an adaptive interview bot. Built with FastAPI and React, the system conducts intelligent assessments, ensures unbiased hiring, and generates structured, data-driven reports for faster decision-making.",
-  tags: [
-    "AI",
-    "Recruitment Automation",
-    "NLP",
-    "Conversational AI",
-    "FastAPI",
-    "React",
-    "Python",
-    "WebSockets",
-    "HR Tech",
-    "Machine Learning"
-  ],
-  github: "https://github.com/SuyashBhavalkar3/AI-Driven-Autonomous-Recruitment-and-Candidate-Assesment-System",
-  demo: "https://ai-driven-autonomous-recruitment-an.vercel.app/",
+    title: "AI-Driven Autonomous Recruitment & Assessment",
+    description: "An AI-powered recruitment platform automates resume parsing, scheduling, and unbiased candidate screening using NLP and an adaptive interview bot.",
+    tags: ["AI", "NLP", "FastAPI", "React", "WebSockets"],
+    github: "https://github.com/SuyashBhavalkar3/AI-Driven-Autonomous-Recruitment-and-Candidate-Assesment-System",
+    demo: "https://ai-driven-autonomous-recruitment-an.vercel.app/",
+    image: "/projects/recruitment_ai.png"
   },
   {
-    title: "Autonomous Generative AI Agent for Presentation Creation",
-    description: "Built an autonomous generative AI system that converts natural language prompts into professional PowerPoint presentations. Designed an agentic workflow using LangGraph with a Dockerized FastAPI backend for slide generation and image rendering, and a responsive React frontend for user interaction and file downloads. Enables fully automated, scalable, and production-ready presentation creation for business and academic use cases.",
-    tags: [
-      "Generative AI",
-      "Agentic AI",
-      "LangGraph",
-      "FastAPI",
-      "React",
-      "TypeScript",
-      "LLMs",
-      "Docker",
-      "AI Automation",
-      "Prompt Engineering"
-    ],
+    title: "Autonomous GenAI Agent for Presentations",
+    description: "Built an autonomous system that converts natural language prompts into professional PowerPoint presentations using LangGraph and FastAPI.",
+    tags: ["GenAI", "LangGraph", "FastAPI", "Docker", "LLMs"],
     github: "https://github.com/SuyashBhavalkar3/Autonomous_Generative_AI_Agent_for_Presentation_Creation",
     demo: "https://autonomous-generative-ai-agent-for.vercel.app/",
+    image: "/projects/genai_ppt.png"
   },
   {
-    title: "RAG-based Legal & Policy Document Assistant",
-    description: "Developed an AI-powered document intelligence system enabling users to upload legal and policy PDFs and receive accurate, context-aware answers using Retrieval-Augmented Generation (RAG). Implemented OpenAI embeddings with FAISS vector search for semantic retrieval and built scalable APIs using FastAPI, supporting real-world legal research and compliance analysis workflows.",
-    tags: [
-      "Retrieval-Augmented Generation",
-      "RAG",
-      "LLMs",
-      "LangChain",
-      "Vector Databases",
-      "FAISS",
-      "FastAPI",
-      "Python",
-      "Document AI",
-      "NLP"
-    ],
+    title: "RAG-based Legal & Policy Assistant",
+    description: "AI-powered document intelligence enabling users to upload PDFs and receive context-aware answers using RAG and vector search.",
+    tags: ["RAG", "LangChain", "FAISS", "FastAPI", "Python"],
     github: "https://github.com/SuyashBhavalkar3/RAG_based_Legal_and_Policy_Document_Assistant",
     demo: "https://rag-based-legal-and-policy-document.vercel.app/",
+    image: "/projects/legal_rag.png"
   },
   {
     title: "MRI-Based Brain Tumor Classification",
-    description: "Designed and deployed a deep learning system for automated brain tumor detection from MRI scans using CNN architectures and EfficientNet. Built a full pipeline including image preprocessing (noise removal, skull stripping), data augmentation, feature extraction, and model evaluation to improve diagnostic accuracy and early disease detection, with a web interface for clinical-style interaction.",
-    tags: [
-      "Deep Learning",
-      "Computer Vision",
-      "CNN",
-      "EfficientNet",
-      "Medical AI",
-      "Healthcare AI",
-      "Python",
-      "FastAPI",
-      "Model Training",
-      "Image Processing"
-    ],
+    description: "Deep learning system for automated brain tumor detection from MRI scans using CNN architectures and EfficientNet.",
+    tags: ["Deep Learning", "Computer Vision", "CNN", "EfficientNet", "Medical AI"],
     github: "https://github.com/SuyashBhavalkar3/mri-brain-tumor-classification-efficientnet",
     demo: "https://mri-brain-tumor-classification-effi.vercel.app/",
+    image: "/projects/brain_tumor.png"
   },
   {
     title: "Driver Drowsiness Detection System",
-    description: "Engineered a real-time computer vision system to detect driver fatigue using facial landmark analysis and biometric indicators such as Eye Aspect Ratio (EAR) and Mouth Aspect Ratio (MAR). Integrated live video processing to trigger alerts during early signs of drowsiness, enhancing road safety through intelligent monitoring and behavioral analysis.",
-    tags: [
-      "Computer Vision",
-      "Real-Time AI",
-      "MediaPipe",
-      "Facial Landmark Detection",
-      "Python",
-      "FastAPI",
-      "AI Safety Systems",
-      "Edge AI",
-      "Video Analytics"
-    ],
+    description: "Real-time computer vision system to detect driver fatigue using facial landmark analysis and biometric indicators.",
+    tags: ["Computer Vision", "Real-Time AI", "MediaPipe", "Python", "Safety"],
     github: "https://github.com/SuyashBhavalkar3/Driver_Drowsiness_Detection_System",
     demo: "https://driver-drowsiness-detection-system-sooty.vercel.app/",
+    image: "/projects/drowsiness.png"
   },
   {
-    title: "CryptoLock – Secure Text Encryption Platform",
-    description: "Developed a secure web-based encryption platform enabling users to protect sensitive information using modern cryptographic algorithms and PGP-based encryption techniques. Implemented a FastAPI backend with a React + Vite frontend to ensure secure data handling, confidentiality, and safe transmission across distributed systems.",
-    tags: [
-      "Cybersecurity",
-      "Cryptography",
-      "PGP Encryption",
-      "Secure Systems",
-      "FastAPI",
-      "React",
-      "Python",
-      "Data Security",
-      "Web Security"
-    ],
+    title: "CryptoLock – Secure Text Encryption",
+    description: "Secure web-based encryption platform protecting sensitive information using modern cryptographic algorithms and PGP.",
+    tags: ["Cybersecurity", "Cryptography", "FastAPI", "React", "Security"],
     github: "https://github.com/SuyashBhavalkar3/CryptoLock-Text_encryption_using_cryptographic_algorithms",
     demo: "https://crypto-lock-text-encryption-using-c.vercel.app/",
-  },
-  {
-  title: "Hacktrack – Farmer Legal & Policy Assistant",
-  description: "Built an AI-powered chatbot platform to assist farmers with government schemes, crop insurance, and agricultural laws using RAG-based retrieval and LLMs. Developed with FastAPI and React/Vite, the system supports multilingual queries, PDF document analysis, and secure JWT-based authentication for seamless advisory access.",
-  tags: [
-    "AI",
-    "RAG",
-    "Langchain",
-    "FastAPI",
-    "React",
-    "TypeScript",
-    "JWT Authentication",
-    "Multilingual NLP",
-    "FAISS",
-    "AgriTech"
-  ],
-  github: "https://github.com/SuyashBhavalkar3/AI-Based-Farmer-Advisory-Chatbot-For-HackTrack-SKNIEEE-Hackathon",
-  demo: "https://github.com/SuyashBhavalkar3/AI-Based-Farmer-Advisory-Chatbot-For-HackTrack-SKNIEEE-Hackathon",
+    image: "/projects/cryptolock.png"
   }
 ];
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="py-24 bg-secondary/30">
+    <section id="projects" className="py-24 bg-background relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 blur-[120px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-accent/5 blur-[120px] -z-10" />
+
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <p className="text-sm uppercase tracking-widest text-primary font-medium mb-4">
-            Featured Work
+          <p className="text-sm uppercase tracking-[0.3em] text-primary font-bold mb-4">
+            Curated Portfolio
           </p>
-          <h2 className="font-heading text-3xl md:text-4xl font-semibold text-foreground">
-            Projects
+          <h2 className="font-heading text-4xl md:text-5xl font-semibold text-foreground">
+            Feature Projects
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {projects.map((project, index) => (
             <motion.div
               key={index}
@@ -156,63 +84,108 @@ export function ProjectsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -10 }}
               className="group"
             >
-              <div className="bg-card border border-border rounded-xl p-6 h-full flex flex-col transition-shadow hover:shadow-lg">
-                {/* Project Number */}
-                <span className="text-6xl font-heading font-bold text-secondary-foreground/10 mb-4">
-                  0{index + 1}
-                </span>
-                
-                <h3 className="font-heading text-xl font-semibold text-foreground mb-3">
-                  {project.title}
-                </h3>
-                
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-grow">
-                  {project.description}
-                </p>
-                
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tags.map((tag, tagIndex) => (
-                    <span
-                      key={tagIndex}
-                      className="text-xs px-3 py-1 bg-secondary text-secondary-foreground rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+              <div className="h-full flex flex-col bg-secondary/20 backdrop-blur-md border border-white/5 dark:border-white/10 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:border-primary/50 relative">
+                {/* Project Image Header */}
+                <div className="relative h-48 overflow-hidden">
+                   <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                 </div>
-                
-                {/* Buttons */}
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 rounded-full"
-                    asChild
-                  >
-                    <a href={project.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="w-4 h-4 mr-2" />
-                      GitHub
+
+                <div className="p-6 flex flex-col flex-grow relative">
+                  <h3 className="font-heading text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-grow">
+                    {project.description}
+                  </p>
+                  
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.tags.map((tag, tagIndex) => (
+                      <span
+                        key={tagIndex}
+                        className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-primary/10 text-primary border border-primary/20 rounded-md font-bold"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  {/* Buttons */}
+                  <div className="flex gap-4 mt-auto">
+                    <a 
+                      href={project.github} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors p-2 rounded-full hover:bg-primary/5"
+                      title="GitHub Repository"
+                    >
+                      <Github className="w-5 h-5" />
                     </a>
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="flex-1 rounded-full"
-                    asChild
-                  >
-                    <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Live Demo
+                    <a 
+                      href={project.demo} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors p-2 rounded-full hover:bg-primary/5"
+                      title="Live Demo"
+                    >
+                      <ExternalLink className="w-5 h-5" />
                     </a>
-                  </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* View All on GitHub CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-20 text-center"
+        >
+          <div className="inline-flex flex-col items-center p-8 rounded-3xl bg-secondary/10 backdrop-blur-xl border border-white/5 relative overflow-hidden group">
+            {/* Background Glow */}
+            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <p className="text-muted-foreground mb-6 max-w-sm">
+              Discover more innovative solutions, experimentations, and open-source contributions.
+            </p>
+            
+            <Button
+              size="lg"
+              className="rounded-full px-8 h-14 font-bold text-lg group/btn overflow-hidden relative"
+              asChild
+            >
+              <a 
+                href="https://github.com/SuyashBhavalkar3" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Github className="w-5 h-5 mr-3 group-hover/btn:scale-110 transition-transform" />
+                View All on GitHub
+              </a>
+            </Button>
+
+            {/* Aesthetic Detail */}
+            <div className="mt-6 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse" />
+              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 font-bold">
+                Continuous Development
+              </span>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

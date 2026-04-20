@@ -1,32 +1,34 @@
-import React from "react";
-import { motion } from "framer-motion";
-
-/**
- * SkillSet Component
- * Displays skills organized by category in a clean, animated 2-column grid layout
- * with smooth entrance animations and interactive hover effects.
- */
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { 
+  BrainCircuit, 
+  Cpu, 
+  Database, 
+  Bot, 
+  Code2, 
+  Layout, 
+  Server, 
+  Terminal,
+  Zap
+} from "lucide-react";
 
 // Types
 export type SkillItem = Readonly<{
   name: string;
-  level?: "Beginner" | "Intermediate" | "Advanced";
   proficiency?: number;
 }>;
 
 export type SkillCategory = Readonly<{
   title: string;
+  icon: React.ReactNode;
   skills: readonly SkillItem[];
 }>;
 
-interface SkillSetProps {
-  readonly skills?: readonly SkillCategory[];
-}
-
-// Default skills organized by category - Ordered by AI awareness
-const defaultSkillSet: readonly SkillCategory[] = [
+// Default skills with icons
+const skillsWithIcons: readonly SkillCategory[] = [
   {
     title: "AI / Machine Learning",
+    icon: <BrainCircuit className="w-6 h-6" />,
     skills: [
       { name: "Artificial Intelligence" },
       { name: "Machine Learning" },
@@ -36,6 +38,7 @@ const defaultSkillSet: readonly SkillCategory[] = [
   },
   {
     title: "AI Tools & Libraries",
+    icon: <Cpu className="w-6 h-6" />,
     skills: [
       { name: "TensorFlow" },
       { name: "PyTorch" },
@@ -45,6 +48,7 @@ const defaultSkillSet: readonly SkillCategory[] = [
   },
   {
     title: "Data Processing",
+    icon: <Database className="w-6 h-6" />,
     skills: [
       { name: "Pandas" },
       { name: "Database Management Systems" },
@@ -53,14 +57,16 @@ const defaultSkillSet: readonly SkillCategory[] = [
   },
   {
     title: "LLM & Agent Frameworks",
+    icon: <Bot className="w-6 h-6" />,
     skills: [
       { name: "LangChain" },
       { name: "LangGraph" },
-      { name: "RESTful APIs" },
+      { name: "Agentic AI" },
     ],
   },
   {
     title: "Programming Languages",
+    icon: <Code2 className="w-6 h-6" />,
     skills: [
       { name: "Python" },
       { name: "Java" },
@@ -70,178 +76,125 @@ const defaultSkillSet: readonly SkillCategory[] = [
   },
   {
     title: "Frontend Development",
+    icon: <Layout className="w-6 h-6" />,
     skills: [
       { name: "React" },
       { name: "Vite" },
-      { name: "Bootstrap" },
       { name: "TypeScript" },
+      { name: "Tailwind CSS" },
     ],
   },
   {
     title: "Backend & Databases",
+    icon: <Server className="w-6 h-6" />,
     skills: [
       { name: "FastAPI" },
-      { name: "MySQL" },
+      { name: "Node.js" },
       { name: "MongoDB" },
-      { name: "PHP" },
+      { name: "PostgreSQL" },
     ],
   },
   {
-    title: "DevOps & System Foundations",
+    title: "DevOps & Systems",
+    icon: <Terminal className="w-6 h-6" />,
     skills: [
       { name: "Git" },
       { name: "Docker" },
-      { name: "Operating Systems" },
+      { name: "Linux" },
       { name: "Computer Networks" },
     ],
   },
-] as const;
+];
 
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.02,
-      delayChildren: 0,
-    },
-  },
-} as const;
+const GridBackground = () => (
+  <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none overflow-hidden">
+    <div className="absolute inset-0" style={{ 
+      backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
+      backgroundSize: '40px 40px'
+    }} />
+  </div>
+);
 
-const categoryVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-} as const;
+const SkillSet: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  });
 
-const skillVariants = {
-  hidden: { opacity: 0, scale: 0.92, y: 8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { duration: 0.3 },
-  },
-} as const;
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
-// Component
-const SkillSet: React.FC<SkillSetProps> = ({ skills = defaultSkillSet }) => {
   return (
-    <section id="skills" className="py-20 md:py-32 relative overflow-hidden">
-      <div className="container mx-auto px-6">
-        {/* Section Header */}
+    <section id="skills" className="py-32 relative bg-background overflow-hidden" ref={containerRef}>
+      <GridBackground />
+      
+      {/* Dynamic Glows */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-20 md:mb-24"
+          viewport={{ once: true }}
+          className="text-center mb-24"
         >
-          <p className="text-xs uppercase tracking-widest text-accent font-semibold mb-3">
-            Technical Stack
+          <p className="text-sm uppercase tracking-[0.4em] text-primary font-bold mb-4">
+            Competencies
           </p>
-          <h2 className="font-heading text-4xl md:text-5xl font-semibold mb-4 text-foreground">
-            Skills & Technologies
+          <h2 className="font-heading text-4xl md:text-6xl font-semibold mb-6">
+            Technical Arsenal
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-            A collection of technologies and tools I work with across frontend, backend, AI/ML,
-            and DevOps domains
-          </p>
+          <div className="h-1 w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto" />
         </motion.div>
 
-        {/* Skills Grid - 2 Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-20">
-          {skills.map((category, categoryIndex) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {skillsWithIcons.map((category, idx) => (
             <motion.div
-              key={category.title}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{
-                duration: 0.4,
-                delay: categoryIndex * 0.04,
-              }}
-              viewport={{ once: true, margin: "-50px" }}
-              className="space-y-10"
+              key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.05 }}
+              whileHover={{ y: -5 }}
+              className="group"
             >
-              {/* Category Header */}
-              <div className="relative">
-                <motion.div
-                  initial={{ width: 0, opacity: 0 }}
-                  whileInView={{ width: "100%", opacity: 1 }}
-                  transition={{
-                    delay: categoryIndex * 0.04,
-                    duration: 0.5,
-                  }}
-                  viewport={{ once: true }}
-                  className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-foreground/0 via-foreground/15 to-foreground/0"
-                />
-                <motion.h3
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{
-                    delay: categoryIndex * 0.04,
-                    duration: 0.4,
-                  }}
-                  viewport={{ once: true }}
-                  className="text-base md:text-lg font-semibold text-foreground/85 tracking-wide uppercase relative"
-                >
-                  <span className="relative inline-block">
-                    {category.title}
-                    <motion.span
-                      initial={{ width: 0, opacity: 0 }}
-                      whileInView={{ width: "100%", opacity: 1 }}
-                      transition={{
-                        delay: categoryIndex * 0.04 + 0.05,
-                        duration: 0.4,
-                      }}
-                      viewport={{ once: true }}
-                      className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary/40 via-primary/60 to-primary/40"
-                    />
-                  </span>
-                </motion.h3>
-              </div>
+              <div className="h-full p-8 rounded-[2rem] bg-secondary/10 backdrop-blur-xl border border-white/5 hover:border-primary/40 transition-all duration-500 relative flex flex-col items-center text-center">
+                {/* Category Icon */}
+                <div className="mb-6 p-4 rounded-2xl bg-primary/10 text-primary group-hover:scale-110 group-hover:bg-primary/20 transition-all">
+                  {category.icon}
+                </div>
+                
+                <h3 className="font-heading text-lg font-bold mb-8 text-foreground group-hover:text-primary transition-colors">
+                  {category.title}
+                </h3>
 
-              {/* Skills Container */}
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-30px" }}
-                className="flex flex-wrap gap-3"
-              >
-                {category.skills.map((skill) => (
-                  <motion.div
-                    key={skill.name}
-                    variants={skillVariants}
-                    whileHover={{
-                      scale: 1.08,
-                      y: -4,
-                      transition: { duration: 0.2 },
-                    }}
-                    whileTap={{ scale: 0.96 }}
-                    className="group"
-                  >
-                    <div className="px-4 py-2.5 rounded-lg border border-border/50 bg-gradient-to-br from-secondary/40 to-secondary/20 hover:from-secondary/60 hover:to-secondary/40 hover:border-primary/50 transition-all duration-250 cursor-pointer shadow-sm hover:shadow-md hover:shadow-primary/10">
-                      <span className="text-sm font-medium text-foreground/90 group-hover:text-primary transition-colors duration-250">
-                        {skill.name}
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                <div className="flex flex-wrap justify-center gap-2 mt-auto w-full">
+                  {category.skills.map((skill, sIdx) => (
+                    <motion.div
+                      key={sIdx}
+                      className="px-3 py-1.5 rounded-lg bg-background/50 border border-border/50 text-[11px] font-bold uppercase tracking-wider text-muted-foreground hover:text-primary hover:border-primary/30 transition-all relative overflow-hidden group/skill"
+                    >
+                      {skill.name}
+                      {/* Pulse Effect */}
+                      <motion.div
+                        animate={{ opacity: [0, 0.4, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: sIdx * 0.5 }}
+                        className="absolute inset-0 bg-primary/10 pointer-events-none"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Technical Decors */}
+                <div className="absolute top-4 right-4 text-[10px] font-mono text-muted-foreground/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                  ID: 0x{idx}F
+                </div>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-primary/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-center" />
+              </div>
             </motion.div>
           ))}
         </div>
-      </div>
-
-      {/* Background Decoration */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 right-0 w-72 h-72 bg-primary/2 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 left-0 w-64 h-64 bg-accent/2 rounded-full blur-3xl" />
       </div>
     </section>
   );
