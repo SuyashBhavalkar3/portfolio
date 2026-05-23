@@ -1,65 +1,52 @@
-import Image from "next/image";
+"use client";
+
+import React from "react";
+import IDEWindow from "@/components/IDEWindow";
+import HeroFile from "@/components/HeroFile";
+import ExperienceFile from "@/components/ExperienceFile";
+import ProjectsFile from "@/components/ProjectsFile";
+import SkillsFile from "@/components/SkillsFile";
+import PublicationsFile from "@/components/PublicationsFile";
+import ContactFile from "@/components/ContactFile";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="flex flex-col flex-1 items-center justify-center p-4 md:p-8 bg-[#090a0f] min-h-screen relative overflow-hidden">
+      {/* Background glowing light leak spots for Antigravity theme */}
+      <div className="glow-spot glow-blue w-[350px] h-[350px] md:w-[450px] md:h-[450px] top-[-100px] left-[-50px]" />
+      <div className="glow-spot glow-purple w-[400px] h-[400px] md:w-[500px] md:h-[500px] bottom-[-100px] right-[-50px]" />
+      <div className="glow-spot glow-cyan w-[250px] h-[250px] md:w-[350px] md:h-[350px] top-[40%] right-[5%]" />
+      <div className="glow-spot glow-emerald w-[200px] h-[200px] md:w-[300px] md:h-[300px] bottom-[30%] left-[5%]" />
+
+      {/* Floating abstract decorative elements (Antigravity float effect) */}
+      <div className="absolute top-[8%] left-[85%] w-1.5 h-1.5 bg-white/20 rounded-full animate-pulse" />
+      <div className="absolute bottom-[15%] left-[8%] w-2 h-2 bg-white/10 rounded-full animate-float" style={{ animationDelay: "1s" }} />
+      <div className="absolute top-[65%] left-[4%] w-1.5 h-1.5 bg-white/25 rounded-full animate-pulse" style={{ animationDelay: "2.5s" }} />
+      <div className="absolute top-[20%] left-[12%] w-1 h-1 bg-white/30 rounded-full animate-float" style={{ animationDelay: "0.5s" }} />
+
+      <main className="w-full max-w-5xl z-10 flex flex-col items-center">
+        <IDEWindow>
+          {(activeFile, setActiveFile) => {
+            switch (activeFile) {
+              case "suyash.ts":
+                return <HeroFile onNavigate={setActiveFile} />;
+              case "experience.json":
+                return <ExperienceFile />;
+              case "projects.json":
+                return <ProjectsFile />;
+              case "skills.py":
+                return <SkillsFile />;
+              case "publications.md":
+                return <PublicationsFile />;
+              case "contact.go":
+                return <ContactFile />;
+              default:
+                return <HeroFile onNavigate={setActiveFile} />;
+            }
+          }}
+        </IDEWindow>
       </main>
     </div>
   );
 }
+
