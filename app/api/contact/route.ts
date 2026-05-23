@@ -1,5 +1,20 @@
 import { NextResponse } from "next/server";
 
+export async function GET() {
+  try {
+    const serviceId = process.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = process.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    return NextResponse.json({ serviceId, templateId, publicKey });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || "Failed to retrieve configuration." },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const { name, email, message } = await request.json();

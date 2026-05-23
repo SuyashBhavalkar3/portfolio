@@ -59,25 +59,43 @@ func HandleContact(w http.ResponseWriter, r *http.Request) {
     setStatus({ type: "sending" });
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setStatus({ type: "success", message: "Message dispatched successfully (HTTP 200 OK)!" });
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus({ type: "error", message: data.error || "Failed to dispatch message (HTTP 500)." });
+      // 1. Fetch EmailJS keys from the backend securely
+      const configRes = await fetch("/api/contact");
+      if (!configRes.ok) {
+        throw new Error("Failed to load configuration keys from the server.");
       }
-    } catch (err) {
-      console.error(err);
-      setStatus({ type: "error", message: "Network connection refused. Please try again." });
+      const config = await configRes.json();
+      
+      if (!config.publicKey || !config.serviceId || !config.templateId) {
+        throw new Error("EmailJS credentials are not configured on the server.");
+      }
+
+      // 2. Import browser-side EmailJS dynamically
+      const emailjs = (await import("@emailjs/browser")).default;
+
+      // 3. Send email directly from the browser context to bypass the server 403 block
+      await emailjs.send(
+        config.serviceId,
+        config.templateId,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          reply_to: formData.email,
+          name: formData.name,
+          email: formData.email,
+        },
+        config.publicKey
+      );
+
+      setStatus({ type: "success", message: "Message dispatched successfully via EmailJS Browser API!" });
+      setFormData({ name: "", email: "", message: "" });
+    } catch (err: any) {
+      console.error("Email dispatch failed:", err);
+      setStatus({ 
+        type: "error", 
+        message: err.text || err.message || "Failed to dispatch message. Please try again later." 
+      });
     }
   };
 
