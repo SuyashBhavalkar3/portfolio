@@ -149,7 +149,7 @@ func HandleContact(w http.ResponseWriter, r *http.Request) {
             </div>
 
             <div className="flex flex-col gap-3.5 text-zinc-400 leading-relaxed">
-              <h3 className="text-white font-semibold text-sm">Direct Contact Channel</h3>
+              <h3 className="text-zinc-350 font-medium text-sm">Direct Contact Channel</h3>
               <p className="text-xs">
                 Feel free to fill out the form to trigger the automated **EmailJS** mail dispatcher. Your message will be routed directly to Suyash's inbox at:
               </p>
@@ -179,7 +179,7 @@ func HandleContact(w http.ResponseWriter, r *http.Request) {
                   placeholder="Your name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded bg-ide-bg border border-ide-border focus:border-blue-500 text-white placeholder-zinc-600 outline-none transition-colors"
+                  className="w-full px-3.5 py-2 rounded bg-ide-bg border border-ide-border focus:border-blue-500 text-zinc-300 placeholder-zinc-600 outline-none transition-colors font-mono"
                 />
               </div>
 
@@ -191,7 +191,7 @@ func HandleContact(w http.ResponseWriter, r *http.Request) {
                   placeholder="your.email@domain.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded bg-ide-bg border border-ide-border focus:border-blue-500 text-white placeholder-zinc-600 outline-none transition-colors"
+                  className="w-full px-3.5 py-2 rounded bg-ide-bg border border-ide-border focus:border-blue-500 text-zinc-300 placeholder-zinc-600 outline-none transition-colors font-mono"
                 />
               </div>
 
@@ -203,7 +203,7 @@ func HandleContact(w http.ResponseWriter, r *http.Request) {
                   placeholder="Type your message details here..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded bg-ide-bg border border-ide-border focus:border-blue-500 text-white placeholder-zinc-600 outline-none transition-colors resize-none"
+                  className="w-full px-3.5 py-2 rounded bg-ide-bg border border-ide-border focus:border-blue-500 text-zinc-300 placeholder-zinc-600 outline-none transition-colors resize-none font-mono"
                 />
               </div>
 

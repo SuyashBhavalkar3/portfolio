@@ -129,7 +129,7 @@ class SuyashSkills:
                 <div className={`p-2 rounded-lg border flex items-center justify-center transition-colors group-hover:scale-105 duration-300 ${cat.iconColor}`}>
                   {cat.icon}
                 </div>
-                <h3 className="text-base font-bold text-white group-hover:text-blue-400 transition-colors">
+                <h3 className="text-base font-medium text-zinc-300 group-hover:text-blue-400 transition-colors">
                   {cat.title}
                 </h3>
               </div>

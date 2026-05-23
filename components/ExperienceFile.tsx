@@ -114,7 +114,7 @@ export default function ExperienceFile() {
                     <div>
                       <div className="flex items-center gap-2">
                         <Briefcase className="w-4 h-4 text-blue-400" />
-                        <h3 className="text-base font-bold text-white group-hover:text-blue-400 transition-colors">
+                        <h3 className="text-base font-medium text-zinc-300 group-hover:text-blue-400 transition-colors">
                           {job.role}
                         </h3>
                       </div>

@@ -130,7 +130,7 @@ export default function AchievementsFile() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Publications column */}
           <div className="lg:col-span-6 flex flex-col gap-6">
-            <div className="flex items-center gap-2 text-white font-semibold border-b border-ide-border pb-2">
+            <div className="flex items-center gap-2 text-zinc-300 font-medium border-b border-ide-border pb-2">
               <BookOpen className="w-5 h-5 text-blue-400" />
               <h2>IEEE Research Publications</h2>
             </div>
@@ -145,7 +145,7 @@ export default function AchievementsFile() {
                   className="p-4 rounded-lg bg-ide-sidebar/40 border border-ide-border flex flex-col gap-2.5 hover:border-blue-500/20 transition-all"
                 >
                   <span className="text-[10px] font-mono text-blue-400 uppercase tracking-wider">{pub.type}</span>
-                  <h3 className="text-sm font-bold text-white leading-snug">{pub.title}</h3>
+                  <h3 className="text-sm font-medium text-zinc-300 leading-snug">{pub.title}</h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">{pub.description}</p>
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {pub.tags.map((t) => (
@@ -161,7 +161,7 @@ export default function AchievementsFile() {
 
           {/* Achievements column */}
           <div className="lg:col-span-6 flex flex-col gap-6">
-            <div className="flex items-center gap-2 text-white font-semibold border-b border-ide-border pb-2">
+            <div className="flex items-center gap-2 text-zinc-300 font-medium border-b border-ide-border pb-2">
               <Trophy className="w-5 h-5 text-yellow-400" />
               <h2>Honors & Certifications</h2>
             </div>
@@ -180,7 +180,7 @@ export default function AchievementsFile() {
                   </div>
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-xs font-bold text-white leading-tight">{ach.title}</h3>
+                      <h3 className="text-xs font-medium text-zinc-300 leading-tight">{ach.title}</h3>
                       <span className="text-[9px] px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-400 font-mono">{ach.category}</span>
                     </div>
                     <p className="text-[11px] text-zinc-400 leading-relaxed">{ach.description}</p>

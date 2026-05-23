@@ -241,7 +241,7 @@ export default function IDEWindow({ children }: IDEWindowProps) {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -240, opacity: 0 }}
               transition={{ type: "tween", duration: 0.15 }}
-              className="absolute md:relative z-20 md:z-auto left-[52px] md:left-auto top-[37px] md:top-auto bottom-0 h-[calc(100%-37px)] md:h-auto bg-ide-sidebar border-r border-ide-border flex flex-col select-none shrink-0 w-[240px] shadow-2xl md:shadow-none"
+              className="absolute md:relative z-20 md:z-auto left-[52px] md:left-auto top-[37px] md:top-auto bottom-0 h-[calc(100%-37px)] md:h-auto bg-[#0e1017] md:bg-ide-sidebar border-r border-ide-border flex flex-col select-none shrink-0 w-[240px] shadow-2xl md:shadow-none"
             >
               {/* Explorer Header */}
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-ide-border/50 text-xs font-semibold text-zinc-400">
@@ -269,27 +269,19 @@ export default function IDEWindow({ children }: IDEWindowProps) {
                         const file = FILES.find((f) => f.name === tabName) || FILES[0];
                         const isActive = activeFile === tabName;
                         
-                        // Extract parent directory & Git label
+                        // Extract parent directory
                         let folder = "src";
-                        let gitLabel = "M";
-                        let gitColor = "text-yellow-500/80";
                         
                         if (tabName.endsWith(".json")) {
                           folder = "data";
                         } else if (tabName.endsWith(".py")) {
                           folder = "scripts";
-                          gitLabel = "U";
-                          gitColor = "text-emerald-500/80";
                         } else if (tabName.endsWith(".md")) {
                           folder = "docs";
                         } else if (tabName.endsWith(".go")) {
                           folder = "api";
-                          gitLabel = "U";
-                          gitColor = "text-emerald-500/80";
                         } else if (tabName.endsWith(".pdf")) {
                           folder = "assets";
-                          gitLabel = "U";
-                          gitColor = "text-emerald-500/80";
                         }
 
                         return (
@@ -316,7 +308,6 @@ export default function IDEWindow({ children }: IDEWindowProps) {
                               <span className="font-mono text-xs truncate">{tabName}</span>
                               <span className="text-[9px] text-zinc-600 font-mono truncate pl-1">{folder}</span>
                             </div>
-                            <span className={`text-[10px] font-bold font-mono pr-1 ${gitColor}`}>{gitLabel}</span>
                           </div>
                         );
                       })}
@@ -349,18 +340,21 @@ export default function IDEWindow({ children }: IDEWindowProps) {
                         <div className="pl-6 mt-1 flex flex-col gap-0.5">
                           {FILES.map((file) => {
                             const isActive = activeFile === file.name;
+                            
                             return (
                               <div
                                 key={file.name}
                                 onClick={() => openFile(file.name)}
-                                className={`flex items-center gap-2 px-3 py-1.5 rounded-l-md cursor-pointer transition-all border-l-2 ${
+                                className={`flex items-center justify-between px-3 py-1.5 rounded-l-md cursor-pointer transition-all border-l-2 ${
                                   isActive 
                                     ? "bg-ide-editor/80 text-blue-400 border-blue-500 font-medium" 
-                                    : "text-zinc-450 hover:bg-ide-editor/40 hover:text-zinc-200 border-transparent"
+                                    : "hover:bg-ide-editor/40 border-transparent text-zinc-400 hover:text-zinc-250"
                                 }`}
                               >
-                                <FileCode className={`w-4 h-4 ${file.iconColor}`} />
-                                <span className="font-mono text-xs">{file.name}</span>
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <FileCode className={`w-4 h-4 ${file.iconColor}`} />
+                                  <span className="font-mono text-xs truncate">{file.name}</span>
+                                </div>
                               </div>
                             );
                           })}
