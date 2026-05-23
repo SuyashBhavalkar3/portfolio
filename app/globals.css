@@ -112,3 +112,9 @@ body {
   scrollbar-width: none;  /* Firefox */
 }
 
+/* Center and align the LinkedIn profile badge iframe */
+.LI-profile-badge iframe {
+  margin: 0 auto !important;
+  display: block !important;
+}
+

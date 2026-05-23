@@ -1,16 +1,39 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Download, ExternalLink, Mail, Github, Linkedin, Terminal, ArrowRight, User, FileText } from "lucide-react";
+import Script from "next/script";
 
 interface HeroFileProps {
   onNavigate: (fileName: string) => void;
 }
 
 export default function HeroFile({ onNavigate }: HeroFileProps) {
+  useEffect(() => {
+    // Re-render LinkedIn badge if script is already loaded (handles tab switching)
+    if (typeof window !== "undefined" && (window as any).LIRenderAll) {
+      try {
+        (window as any).LIRenderAll();
+      } catch (err) {
+        console.error("LinkedIn badge render error:", err);
+      }
+    }
+  }, []);
+
   return (
     <div className="flex flex-col justify-between w-full max-w-[1200px] mx-auto flex-1 py-1">
+      <Script 
+        src="https://platform.linkedin.com/badges/js/profile.js" 
+        async 
+        defer 
+        type="text/javascript"
+        onLoad={() => {
+          if (typeof window !== "undefined" && (window as any).LIRenderAll) {
+            (window as any).LIRenderAll();
+          }
+        }}
+      />
       {/* Code Block Mockup header */}
       <div className="font-mono text-[11px] md:text-xs text-zinc-555 border-b border-ide-border/50 pb-2 shrink-0">
         <span className="text-code-keyword">import</span> {"{ Developer }"} <span className="text-code-keyword">from</span> <span className="text-code-string">"suyash"</span>;
@@ -22,7 +45,7 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
       <div className="flex-1 flex flex-col justify-center my-2 md:my-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-center w-full">
           {/* Left Side Info */}
-          <div className="lg:col-span-8 flex flex-col gap-4 md:gap-5">
+          <div className="lg:col-span-7 flex flex-col gap-4 md:gap-5">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -96,23 +119,38 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
           </div>
 
           {/* Right Side Card: Personal Info/Resume card */}
-          <div className="lg:col-span-4 flex justify-center">
+          <div className="lg:col-span-5 flex justify-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.15 }}
-              className="w-full max-w-[255px] p-4.5 rounded-xl bg-ide-sidebar/80 border border-ide-border relative overflow-hidden flex flex-col items-center text-center shadow-xl group hover:border-blue-500/40 transition-all mt-0.5"
+              className="w-full max-w-[300px] p-6 rounded-xl bg-ide-sidebar/80 border border-ide-border relative overflow-hidden flex flex-col items-center text-center shadow-xl group hover:border-blue-500/40 transition-all mt-0.5"
             >
 
 
-              {/* Profile Graphic/Placeholder */}
-              <div className="w-14 h-14 rounded-full border border-ide-border bg-ide-bg flex items-center justify-center relative overflow-hidden group-hover:scale-105 transition-all mt-0.5">
-                <User className="w-7 h-7 text-zinc-650" />
+              {/* LinkedIn Profile Badge */}
+              <div className="w-full flex items-center justify-center relative">
+                <div 
+                  style={{ width: "250px" }}
+                  className="badge-base LI-profile-badge" 
+                  data-locale="en_US" 
+                  data-size="medium" 
+                  data-theme="dark" 
+                  data-type="VERTICAL" 
+                  data-vanity="suyashbhavalkar3" 
+                  data-version="v1" 
+                />
+                {/* Transparent overlay to block clicks on the profile info/links while keeping the bottom 'View profile' button clickable */}
+                <div 
+                  className="absolute cursor-default bg-transparent"
+                  style={{ 
+                    width: "250px", 
+                    top: "0px", 
+                    bottom: "54px", 
+                    zIndex: 10 
+                  }}
+                />
               </div>
-
-              <h3 className="text-sm font-medium text-zinc-300 mt-3">Suyash Bhavalkar</h3>
-              <p className="text-[10px] text-zinc-500 font-mono mt-0.5">B.Tech CS (AI & ML)</p>
-              <p className="text-[10px] text-blue-400 font-mono mt-0.5">VIT, Pune</p>
 
               <div className="w-full border-t border-ide-border/50 my-3" />
 
