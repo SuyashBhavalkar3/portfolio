@@ -18,7 +18,7 @@ interface Achievement {
   icon: React.ReactNode;
 }
 
-export default function PublicationsFile() {
+export default function AchievementsFile() {
   const [viewMode, setViewMode] = useState<"visual" | "markdown">("visual");
 
   const PUBLICATIONS: Publication[] = [
@@ -69,7 +69,7 @@ export default function PublicationsFile() {
     }
   ];
 
-  const markdownContent = `# docs/publications.md
+  const markdownContent = `# docs/achievements.md
 
 ## 📚 IEEE Research Publications
 * Contributed to **2 IEEE publications** in international conferences focusing on AI/ML applications and data-driven systems.
@@ -98,7 +98,7 @@ export default function PublicationsFile() {
       {/* File type toggle */}
       <div className="flex items-center justify-between border-b border-ide-border/50 pb-3 font-mono text-xs">
         <div className="text-zinc-500">
-          <span># publications.md - research & accomplishments</span>
+          <span># achievements.md - research & accomplishments</span>
         </div>
         <div className="flex gap-2 bg-ide-sidebar p-1 rounded border border-ide-border">
           <button

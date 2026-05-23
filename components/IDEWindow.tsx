@@ -35,8 +35,9 @@ const FILES: FileItem[] = [
   { name: "experience.json", lang: "JSON", iconColor: "text-yellow-400", path: "data/experience.json" },
   { name: "projects.json", lang: "JSON", iconColor: "text-yellow-400", path: "data/projects.json" },
   { name: "skills.py", lang: "Python", iconColor: "text-green-400", path: "scripts/skills.py" },
-  { name: "publications.md", lang: "Markdown", iconColor: "text-emerald-400", path: "docs/publications.md" },
-  { name: "contact.go", lang: "Go", iconColor: "text-cyan-400", path: "api/contact.go" }
+  { name: "achievements.md", lang: "Markdown", iconColor: "text-emerald-400", path: "docs/achievements.md" },
+  { name: "contact.go", lang: "Go", iconColor: "text-cyan-400", path: "api/contact.go" },
+  { name: "resume.pdf", lang: "PDF", iconColor: "text-red-400", path: "assets/resume.pdf" }
 ];
 
 interface IDEWindowProps {
@@ -98,7 +99,7 @@ export default function IDEWindow({ children }: IDEWindowProps) {
           <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors cursor-pointer" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors cursor-pointer" />
           <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-pointer" />
-          <span className="ml-4 text-xs text-zinc-500 font-mono hidden md:inline">SuyashBhavalkar - Antigravity IDE</span>
+          <span className="ml-4 text-xs text-zinc-500 font-mono hidden md:inline">SuyashBhavalkar - Portfolio IDE</span>
         </div>
 
         {/* Breadcrumbs or central title */}
@@ -230,7 +231,11 @@ export default function IDEWindow({ children }: IDEWindowProps) {
           </div>
 
           {/* Editor Body */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-6 min-h-0 min-w-0">
+          <div className={`flex-1 flex flex-col overflow-y-auto min-h-0 min-w-0 ${
+            activeFile === "resume.pdf" ? "p-0" : "p-4 md:p-6"
+          } ${
+            activeFile === "suyash.ts" || activeFile === "contact.go" || activeFile === "resume.pdf" ? "scrollbar-none" : ""
+          }`}>
             {children(activeFile, openFile)}
           </div>
         </div>

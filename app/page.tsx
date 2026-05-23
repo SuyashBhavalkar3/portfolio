@@ -6,8 +6,9 @@ import HeroFile from "@/components/HeroFile";
 import ExperienceFile from "@/components/ExperienceFile";
 import ProjectsFile from "@/components/ProjectsFile";
 import SkillsFile from "@/components/SkillsFile";
-import PublicationsFile from "@/components/PublicationsFile";
+import AchievementsFile from "@/components/AchievementsFile";
 import ContactFile from "@/components/ContactFile";
+import ResumeFile from "@/components/ResumeFile";
 
 export default function Home() {
   return (
@@ -36,10 +37,12 @@ export default function Home() {
                 return <ProjectsFile />;
               case "skills.py":
                 return <SkillsFile />;
-              case "publications.md":
-                return <PublicationsFile />;
+              case "achievements.md":
+                return <AchievementsFile />;
               case "contact.go":
                 return <ContactFile />;
+              case "resume.pdf":
+                return <ResumeFile />;
               default:
                 return <HeroFile onNavigate={setActiveFile} />;
             }
