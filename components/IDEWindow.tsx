@@ -19,7 +19,8 @@ import {
   Heart,
   Search,
   Menu,
-  X
+  X,
+  Boxes
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -50,6 +51,8 @@ export default function IDEWindow({ children }: IDEWindowProps) {
   const [isFolderOpen, setIsFolderOpen] = useState(true);
   const [cursorPos, setCursorPos] = useState({ line: 1, col: 1 });
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isOpenEditorsOpen, setIsOpenEditorsOpen] = useState(true);
+  const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(true);
 
   // Auto-detect mobile viewport on mount
   useEffect(() => {
@@ -94,16 +97,31 @@ export default function IDEWindow({ children }: IDEWindowProps) {
     <div className="relative flex flex-col w-full h-[85vh] min-h-[600px] max-h-[820px] glass-panel border border-ide-border rounded-xl shadow-2xl overflow-hidden text-sm">
       {/* Top Header / Window Title Bar */}
       <div className="flex items-center justify-between px-4 py-3 bg-[#0a0c10] border-b border-ide-border select-none">
-        {/* Window controls */}
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors cursor-pointer" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors cursor-pointer" />
-          <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-pointer" />
-          <span className="ml-4 text-xs text-zinc-500 font-mono hidden md:inline">SuyashBhavalkar - Portfolio IDE</span>
+        {/* Window controls & Menu Bar */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 mr-2">
+            <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors cursor-pointer" />
+            <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors cursor-pointer" />
+            <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-pointer" />
+          </div>
+          
+          {/* Antigravity Logo and Menu Items */}
+          <div className="hidden lg:flex items-center gap-2 ml-1">
+            <div className="w-4 h-4 flex items-center justify-center mr-1">
+              <svg className="w-3.5 h-3.5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                <path d="M12 2L2 22h20L12 2zM12 6l7.5 13h-15L12 6z" fill="rgba(59, 130, 246, 0.2)" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-3 text-xs text-zinc-400">
+              {["File", "Edit", "Selection", "View", "Go", "Run", "Terminal", "Help"].map((item) => (
+                <span key={item} className="hover:text-white cursor-pointer px-1.5 py-0.5 rounded hover:bg-[#1a1e2a]/50 transition-colors">{item}</span>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Breadcrumbs or central title */}
-        <div className="text-xs text-zinc-400 font-mono">
+        {/* Central File Breadcrumb */}
+        <div className="text-xs text-zinc-400 font-mono hidden sm:block">
           portfoliov2 &gt; {activeFileInfo.path}
         </div>
 
@@ -135,7 +153,87 @@ export default function IDEWindow({ children }: IDEWindowProps) {
           <span className="text-xs text-zinc-500 font-mono">{activeFile}</span>
         </div>
 
-        {/* Left Explorer Sidebar */}
+        {/* Left-most Activity Bar (VS Code style) */}
+        <div className="hidden md:flex flex-col justify-between items-center w-[52px] bg-[#0c0d12]/90 border-r border-ide-border select-none py-3 text-zinc-500 shrink-0">
+          {/* Top Icons */}
+          <div className="flex flex-col items-center gap-4 w-full">
+            {/* Custom Brand Logo */}
+            <div className="w-8 h-8 flex items-center justify-center mb-2 hover:scale-105 transition-transform">
+              <svg className="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M12 2L2 22h20L12 2zM12 6l7.5 13h-15L12 6z" fill="rgba(59, 130, 246, 0.15)"/>
+                <circle cx="12" cy="14" r="2.5" fill="currentColor"/>
+              </svg>
+            </div>
+
+            {/* Explorer Toggle */}
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors relative group/tooltip cursor-pointer ${
+                isSidebarOpen ? "text-blue-500 bg-ide-editor/40" : "hover:text-zinc-300"
+              }`}
+            >
+              <FolderOpen className="w-5.5 h-5.5" />
+              <div className="absolute left-14 px-2 py-1 rounded bg-[#131620] border border-ide-border text-zinc-300 text-[10px] font-mono whitespace-nowrap opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-30 shadow-lg">
+                Explorer
+              </div>
+            </button>
+
+            {/* Search */}
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg hover:text-zinc-300 transition-colors relative group/tooltip cursor-pointer">
+              <Search className="w-5.5 h-5.5" />
+              <div className="absolute left-14 px-2 py-1 rounded bg-[#131620] border border-ide-border text-zinc-300 text-[10px] font-mono whitespace-nowrap opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-30 shadow-lg">
+                Search
+              </div>
+            </div>
+
+            {/* Git Branch Badge */}
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg hover:text-zinc-300 transition-colors relative group/tooltip cursor-pointer">
+              <GitBranch className="w-5.5 h-5.5" />
+              <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded-full bg-blue-600 text-[9px] font-bold text-white leading-none scale-90">
+                5
+              </span>
+              <div className="absolute left-14 px-2 py-1 rounded bg-[#131620] border border-ide-border text-zinc-300 text-[10px] font-mono whitespace-nowrap opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-30 shadow-lg">
+                Source Control
+              </div>
+            </div>
+
+            {/* Run & Debug */}
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg hover:text-zinc-300 transition-colors relative group/tooltip cursor-pointer">
+              <svg className="w-5.5 h-5.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <div className="absolute left-14 px-2 py-1 rounded bg-[#131620] border border-ide-border text-zinc-300 text-[10px] font-mono whitespace-nowrap opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-30 shadow-lg">
+                Run and Debug
+              </div>
+            </div>
+
+            {/* Extensions */}
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg hover:text-zinc-300 transition-colors relative group/tooltip cursor-pointer">
+              <Boxes className="w-5.5 h-5.5" />
+              <div className="absolute left-14 px-2 py-1 rounded bg-[#131620] border border-ide-border text-zinc-300 text-[10px] font-mono whitespace-nowrap opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-30 shadow-lg">
+                Extensions
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Icons */}
+          <div className="flex flex-col items-center gap-3 w-full">
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg hover:text-zinc-300 transition-colors relative group/tooltip cursor-pointer">
+              <User className="w-5.5 h-5.5" />
+              <div className="absolute left-14 px-2 py-1 rounded bg-[#131620] border border-ide-border text-zinc-300 text-[10px] font-mono whitespace-nowrap opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-30 shadow-lg">
+                Profile
+              </div>
+            </div>
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg hover:text-zinc-300 transition-colors relative group/tooltip cursor-pointer">
+              <Settings className="w-5.5 h-5.5" />
+              <div className="absolute left-14 px-2 py-1 rounded bg-[#131620] border border-ide-border text-zinc-300 text-[10px] font-mono whitespace-nowrap opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity z-30 shadow-lg">
+                Settings
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Explorer Sidebar */}
         <AnimatePresence initial={false}>
           {isSidebarOpen && (
             <motion.div 
@@ -143,50 +241,138 @@ export default function IDEWindow({ children }: IDEWindowProps) {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -240, opacity: 0 }}
               transition={{ type: "tween", duration: 0.15 }}
-              className="absolute md:relative z-20 md:z-auto left-0 top-[37px] md:top-auto bottom-0 h-[calc(100%-37px)] md:h-auto bg-ide-sidebar border-r border-ide-border flex flex-col select-none shrink-0 w-[240px] shadow-2xl md:shadow-none"
+              className="absolute md:relative z-20 md:z-auto left-[52px] md:left-auto top-[37px] md:top-auto bottom-0 h-[calc(100%-37px)] md:h-auto bg-ide-sidebar border-r border-ide-border flex flex-col select-none shrink-0 w-[240px] shadow-2xl md:shadow-none"
             >
               {/* Explorer Header */}
-              <div className="flex items-center justify-between px-4 py-2 border-b border-ide-border/50 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-                <span>Explorer</span>
-                <span className="text-[10px] text-zinc-500">PORTFOLIO-V2</span>
+              <div className="flex items-center justify-between px-4 py-2.5 border-b border-ide-border/50 text-xs font-semibold text-zinc-400">
+                <span className="uppercase tracking-wider">Explorer</span>
+                <button className="text-zinc-500 hover:text-white transition-colors cursor-pointer text-xs">
+                  •••
+                </button>
               </div>
 
-              {/* File Tree */}
-              <div className="flex-1 py-3 overflow-y-auto">
-                <div 
-                  className="flex items-center gap-1 px-4 py-1 text-zinc-300 hover:text-white cursor-pointer hover:bg-ide-bg transition-colors"
-                  onClick={() => setIsFolderOpen(!isFolderOpen)}
-                >
-                  {isFolderOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-                  {isFolderOpen ? <FolderOpen className="w-4 h-4 text-blue-400" /> : <Folder className="w-4 h-4 text-blue-400" />}
-                  <span className="font-semibold text-xs ml-1">portfolio-source</span>
+              {/* Collapsible Accordion Sections */}
+              <div className="flex-1 flex flex-col min-h-0">
+                {/* Accordion 1: Open Editors */}
+                <div className="flex flex-col border-b border-ide-border/30 shrink-0">
+                  <div 
+                    onClick={() => setIsOpenEditorsOpen(!isOpenEditorsOpen)}
+                    className="flex items-center gap-1 px-3 py-1.5 text-zinc-450 hover:text-zinc-200 cursor-pointer bg-ide-sidebar/20 uppercase tracking-wider text-[10px] font-bold select-none"
+                  >
+                    {isOpenEditorsOpen ? <ChevronDown className="w-3.5 h-3.5 text-zinc-500" /> : <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />}
+                    <span>Open Editors</span>
+                  </div>
+                  
+                  {isOpenEditorsOpen && (
+                    <div className="flex flex-col gap-0.5 py-1.5 pl-3 pr-2">
+                      {openTabs.map((tabName) => {
+                        const file = FILES.find((f) => f.name === tabName) || FILES[0];
+                        const isActive = activeFile === tabName;
+                        
+                        // Extract parent directory & Git label
+                        let folder = "src";
+                        let gitLabel = "M";
+                        let gitColor = "text-yellow-500/80";
+                        
+                        if (tabName.endsWith(".json")) {
+                          folder = "data";
+                        } else if (tabName.endsWith(".py")) {
+                          folder = "scripts";
+                          gitLabel = "U";
+                          gitColor = "text-emerald-500/80";
+                        } else if (tabName.endsWith(".md")) {
+                          folder = "docs";
+                        } else if (tabName.endsWith(".go")) {
+                          folder = "api";
+                          gitLabel = "U";
+                          gitColor = "text-emerald-500/80";
+                        } else if (tabName.endsWith(".pdf")) {
+                          folder = "assets";
+                          gitLabel = "U";
+                          gitColor = "text-emerald-500/80";
+                        }
+
+                        return (
+                          <div
+                            key={tabName}
+                            onClick={() => setActiveFile(tabName)}
+                            className={`flex items-center justify-between group/editor px-2 py-1 rounded cursor-pointer transition-all ${
+                              isActive 
+                                ? "bg-ide-editor/80 text-blue-400" 
+                                : "text-zinc-450 hover:bg-ide-editor/40 hover:text-zinc-200"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2 min-w-0">
+                              <div className="w-4 h-4 flex items-center justify-center shrink-0">
+                                <X
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    closeTab(tabName, e);
+                                  }}
+                                  className="w-3.5 h-3.5 text-zinc-500 hover:text-white rounded hover:bg-zinc-800 p-0.5 hidden group-hover/editor:block cursor-pointer"
+                                />
+                                <FileCode className={`w-4 h-4 ${file.iconColor} group-hover/editor:hidden`} />
+                              </div>
+                              <span className="font-mono text-xs truncate">{tabName}</span>
+                              <span className="text-[9px] text-zinc-600 font-mono truncate pl-1">{folder}</span>
+                            </div>
+                            <span className={`text-[10px] font-bold font-mono pr-1 ${gitColor}`}>{gitLabel}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
-                {isFolderOpen && (
-                  <div className="pl-6 mt-1 flex flex-col gap-0.5">
-                    {FILES.map((file) => {
-                      const isActive = activeFile === file.name;
-                      return (
-                        <div
-                          key={file.name}
-                          onClick={() => openFile(file.name)}
-                          className={`flex items-center gap-2 px-3 py-1.5 rounded-l-md cursor-pointer transition-all border-l-2 ${
-                            isActive 
-                              ? "bg-ide-editor/80 text-blue-400 border-blue-500 font-medium" 
-                              : "text-zinc-400 hover:bg-ide-editor/40 hover:text-zinc-200 border-transparent"
-                          }`}
-                        >
-                          <FileCode className={`w-4 h-4 ${file.iconColor}`} />
-                          <span className="font-mono text-xs">{file.name}</span>
-                        </div>
-                      );
-                    })}
+                {/* Accordion 2: Workspace Directory */}
+                <div className="flex flex-col flex-1 min-h-0">
+                  <div 
+                    onClick={() => setIsWorkspaceOpen(!isWorkspaceOpen)}
+                    className="flex items-center gap-1 px-3 py-1.5 text-zinc-450 hover:text-zinc-200 cursor-pointer bg-ide-sidebar/20 uppercase tracking-wider text-[10px] font-bold select-none border-b border-ide-border/20"
+                  >
+                    {isWorkspaceOpen ? <ChevronDown className="w-3.5 h-3.5 text-zinc-500" /> : <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />}
+                    <span>portfolio-source</span>
                   </div>
-                )}
+
+                  {isWorkspaceOpen && (
+                    <div className="flex-1 overflow-y-auto py-2">
+                      <div 
+                        className="flex items-center gap-1 px-4 py-1 text-zinc-300 hover:text-white cursor-pointer hover:bg-ide-bg/40 transition-colors"
+                        onClick={() => setIsFolderOpen(!isFolderOpen)}
+                      >
+                        {isFolderOpen ? <ChevronDown className="w-3.5 h-3.5 text-zinc-500" /> : <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />}
+                        {isFolderOpen ? <FolderOpen className="w-4 h-4 text-blue-400" /> : <Folder className="w-4 h-4 text-blue-400" />}
+                        <span className="font-semibold text-xs ml-1">portfolio-source</span>
+                      </div>
+
+                      {isFolderOpen && (
+                        <div className="pl-6 mt-1 flex flex-col gap-0.5">
+                          {FILES.map((file) => {
+                            const isActive = activeFile === file.name;
+                            return (
+                              <div
+                                key={file.name}
+                                onClick={() => openFile(file.name)}
+                                className={`flex items-center gap-2 px-3 py-1.5 rounded-l-md cursor-pointer transition-all border-l-2 ${
+                                  isActive 
+                                    ? "bg-ide-editor/80 text-blue-400 border-blue-500 font-medium" 
+                                    : "text-zinc-450 hover:bg-ide-editor/40 hover:text-zinc-200 border-transparent"
+                                }`}
+                              >
+                                <FileCode className={`w-4 h-4 ${file.iconColor}`} />
+                                <span className="font-mono text-xs">{file.name}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Static Settings/Info at bottom of Sidebar */}
-              <div className="p-3 border-t border-ide-border/50 bg-[#0a0c10] text-xs text-zinc-500 flex flex-col gap-2">
+              <div className="p-3 border-t border-ide-border/50 bg-[#0a0c10]/40 text-xs text-zinc-500 flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <User className="w-3.5 h-3.5 text-zinc-400" />
                   <span>Suyash Bhavalkar</span>
@@ -242,28 +428,28 @@ export default function IDEWindow({ children }: IDEWindowProps) {
       </div>
 
       {/* Bottom Status Bar */}
-      <div className="flex items-center justify-between px-4 py-1.5 bg-blue-600 text-white text-xs select-none select-none font-mono">
+      <div className="flex items-center justify-between px-4 py-1.5 bg-[#0a0c10] border-t border-ide-border text-zinc-400 text-xs select-none font-mono">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 bg-blue-700 px-2 py-0.5 rounded text-[11px] font-semibold">
-            <Terminal className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-1 bg-[#161a23]/60 border border-ide-border px-2 py-0.5 rounded text-[11px] font-semibold text-blue-400">
+            <Terminal className="w-3.5 h-3.5 text-blue-400" />
             <span>PORTFOLIO v2.0</span>
           </div>
           <a 
             href="https://github.com/SuyashBhavalkar3" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex items-center gap-1 hover:text-zinc-200 transition-colors"
+            className="flex items-center gap-1 hover:text-white transition-colors"
           >
             <GitBranch className="w-3.5 h-3.5" />
             <span>main</span>
           </a>
         </div>
         
-        <div className="flex items-center gap-4 text-blue-100">
-          <span className="hidden sm:inline">Ln {cursorPos.line}, Col {cursorPos.col}</span>
-          <span className="hidden sm:inline">Spaces: 2</span>
-          <span>UTF-8</span>
-          <span className="bg-blue-700/80 px-2 py-0.5 rounded text-[11px]">{activeFileInfo.lang}</span>
+        <div className="flex items-center gap-4 text-zinc-500">
+          <span className="hidden sm:inline hover:text-zinc-300 cursor-default">Ln {cursorPos.line}, Col {cursorPos.col}</span>
+          <span className="hidden sm:inline hover:text-zinc-300 cursor-default">Spaces: 2</span>
+          <span className="hover:text-zinc-300 cursor-default">UTF-8</span>
+          <span className="bg-[#161a23]/60 border border-ide-border px-2 py-0.5 rounded text-[11px] text-zinc-300">{activeFileInfo.lang}</span>
         </div>
       </div>
     </div>

@@ -34,10 +34,10 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
                 <span>Available for Spring/Summer Internships 2027</span>
               </div>
               
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mt-1">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-zinc-300 mt-1">
                 Suyash Bhavalkar
               </h1>
-              <p className="text-lg md:text-xl font-semibold bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent">
+              <p className="text-lg md:text-xl font-semibold text-blue-400">
                 Building high-performance backend and AI systems
               </p>
             </motion.div>
@@ -48,7 +48,7 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
               transition={{ duration: 0.4, delay: 0.1 }}
               className="text-xs md:text-sm text-zinc-400 leading-relaxed max-w-2xl"
             >
-              Computer Science student specializing in distributed, fault-tolerant architectures, scalable system design, and AI model orchestration. Engineered production-grade systems serving 1,000+ users with <span className="text-white font-medium">&lt;450ms latency</span> using <span className="text-blue-400 font-mono">FastAPI</span> and <span className="text-emerald-400 font-mono">PostgreSQL</span>.
+              Computer Science student specializing in distributed, fault-tolerant architectures, scalable system design, and AI model orchestration. Engineered production-grade systems serving 1,000+ users with <span className="text-zinc-300 font-normal">&lt;450ms latency</span> using <span className="text-blue-400 font-mono">FastAPI</span> and <span className="text-emerald-400 font-mono">PostgreSQL</span>.
             </motion.p>
 
             {/* Quick Stats Grid */}
@@ -59,15 +59,15 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
               className="grid grid-cols-3 gap-3 p-3 rounded-lg bg-ide-sidebar/60 border border-ide-border/50 font-mono text-center"
             >
               <div>
-                <div className="text-lg md:text-xl font-bold text-white">250+</div>
+                <div className="text-lg md:text-xl font-medium text-zinc-300">250+</div>
                 <div className="text-[10px] text-zinc-500">LeetCode Solved</div>
               </div>
               <div className="border-x border-ide-border/50">
-                <div className="text-lg md:text-xl font-bold text-white">1500+</div>
+                <div className="text-lg md:text-xl font-medium text-zinc-300">1500+</div>
                 <div className="text-[10px] text-zinc-500">Contest Rating</div>
               </div>
               <div>
-                <div className="text-lg md:text-xl font-bold text-white">2</div>
+                <div className="text-lg md:text-xl font-medium text-zinc-300">2</div>
                 <div className="text-[10px] text-zinc-500">IEEE Publications</div>
               </div>
             </motion.div>
@@ -81,14 +81,14 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
             >
               <button
                 onClick={() => onNavigate("projects.json")}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg hover:shadow-blue-500/10 hover:translate-y-[-1px] transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-zinc-200 text-xs font-normal shadow-lg hover:shadow-blue-500/10 hover:translate-y-[-1px] transition-all cursor-pointer"
               >
                 <span>Explore Projects</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => onNavigate("contact.go")}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold border border-ide-border hover:translate-y-[-1px] transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-normal border border-ide-border hover:translate-y-[-1px] transition-all cursor-pointer"
               >
                 <span>Get in Touch</span>
               </button>
@@ -103,15 +103,14 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
               transition={{ duration: 0.4, delay: 0.15 }}
               className="w-full max-w-[255px] p-4.5 rounded-xl bg-ide-sidebar/80 border border-ide-border relative overflow-hidden flex flex-col items-center text-center shadow-xl group hover:border-blue-500/40 transition-all mt-0.5"
             >
-              {/* Glowing spot behind photo */}
-              <div className="absolute top-0 w-20 h-20 bg-blue-500/10 rounded-full blur-xl group-hover:bg-blue-500/20 transition-all" />
+
 
               {/* Profile Graphic/Placeholder */}
               <div className="w-14 h-14 rounded-full border border-ide-border bg-ide-bg flex items-center justify-center relative overflow-hidden group-hover:scale-105 transition-all mt-0.5">
                 <User className="w-7 h-7 text-zinc-650" />
               </div>
 
-              <h3 className="text-sm font-bold text-white mt-3">Suyash Bhavalkar</h3>
+              <h3 className="text-sm font-medium text-zinc-300 mt-3">Suyash Bhavalkar</h3>
               <p className="text-[10px] text-zinc-500 font-mono mt-0.5">B.Tech CS (AI & ML)</p>
               <p className="text-[10px] text-blue-400 font-mono mt-0.5">VIT, Pune</p>
 
@@ -122,7 +121,7 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
                 <a
                   href="/resume-v2.1.pdf"
                   download="Suyash_Bhavalkar_Resume.pdf"
-                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded bg-zinc-800 hover:bg-blue-600 hover:text-white text-zinc-300 border border-ide-border transition-all cursor-pointer"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded bg-zinc-800 hover:bg-blue-600 hover:text-zinc-100 text-zinc-300 border border-ide-border transition-all cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5 shrink-0" />
                   <span>Resume</span>
@@ -130,7 +129,7 @@ export default function HeroFile({ onNavigate }: HeroFileProps) {
 
                 <button
                   onClick={() => onNavigate("resume.pdf")}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded bg-zinc-900 hover:bg-[#1e2330] hover:text-white text-zinc-400 hover:text-zinc-200 border border-ide-border/40 transition-all cursor-pointer font-mono"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded bg-zinc-900 hover:bg-[#1e2330] hover:text-zinc-100 text-zinc-400 hover:text-zinc-200 border border-ide-border/40 transition-all cursor-pointer font-mono"
                 >
                   <span>Open in Tab</span>
                   <FileText className="w-3.5 h-3.5 shrink-0 text-blue-400" />

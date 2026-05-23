@@ -5,9 +5,9 @@
   --foreground: #e2e8f0;
   
   --ide-bg: #090a0f;
-  --ide-sidebar: #0e1017;
-  --ide-editor: #131620;
-  --ide-tabs: #0a0c12;
+  --ide-sidebar: rgba(14, 16, 23, 0.78);
+  --ide-editor: rgba(19, 22, 32, 0.85);
+  --ide-tabs: rgba(10, 12, 18, 0.72);
   --ide-border: #1e2330;
   --ide-border-active: #3b82f6;
   
@@ -102,31 +102,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Dynamic glowing light leaks for Antigravity theme */
-.glow-spot {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.12;
-}
-
-.glow-blue {
-  background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
-}
-
-.glow-purple {
-  background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
-}
-
-.glow-cyan {
-  background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
-}
-
-.glow-emerald {
-  background: radial-gradient(circle, #10b981 0%, transparent 70%);
-}
 
 /* Hide scrollbar utility */
 .scrollbar-none::-webkit-scrollbar {
