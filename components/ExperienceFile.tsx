@@ -52,7 +52,7 @@ export default function ExperienceFile() {
   const rawJson = JSON.stringify(EXPERIENCE_DATA, null, 2);
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-4xl mx-auto py-2">
+    <div className="flex flex-col gap-6 w-full max-w-[1200px] mx-auto py-2">
       {/* File type toggle (Visual representation vs JSON view) */}
       <div className="flex items-center justify-between border-b border-ide-border/50 pb-3 font-mono text-xs">
         <div className="text-zinc-500">

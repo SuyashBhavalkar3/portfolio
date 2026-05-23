@@ -94,7 +94,7 @@ export default function AchievementsFile() {
 `;
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-4xl mx-auto py-2">
+    <div className="flex flex-col gap-6 w-full max-w-[1200px] mx-auto py-2">
       {/* File type toggle */}
       <div className="flex items-center justify-between border-b border-ide-border/50 pb-3 font-mono text-xs">
         <div className="text-zinc-500">

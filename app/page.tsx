@@ -25,7 +25,7 @@ export default function Home() {
       <div className="absolute top-[65%] left-[4%] w-1.5 h-1.5 bg-white/25 rounded-full animate-pulse" style={{ animationDelay: "2.5s" }} />
       <div className="absolute top-[20%] left-[12%] w-1 h-1 bg-white/30 rounded-full animate-float" style={{ animationDelay: "0.5s" }} />
 
-      <main className="w-full max-w-5xl z-10 flex flex-col items-center">
+      <main className="w-full max-w-[94vw] 2xl:max-w-[1600px] z-10 flex flex-col items-center px-4 md:px-8">
         <IDEWindow>
           {(activeFile, setActiveFile) => {
             switch (activeFile) {

@@ -140,7 +140,7 @@ export default function ProjectsFile() {
   const rawJson = JSON.stringify(PROJECTS_DATA, null, 2);
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-4xl mx-auto py-2">
+    <div className="flex flex-col gap-6 w-full max-w-[1200px] mx-auto py-2">
       {/* File type toggle and filter */}
       <div className="flex flex-wrap items-center justify-between border-b border-ide-border/50 pb-3 gap-3 font-mono text-xs">
         <div className="flex items-center gap-2">

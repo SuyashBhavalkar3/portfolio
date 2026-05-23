@@ -10,7 +10,7 @@ interface HeroFileProps {
 
 export default function HeroFile({ onNavigate }: HeroFileProps) {
   return (
-    <div className="flex flex-col justify-between w-full max-w-4xl mx-auto flex-1 py-1">
+    <div className="flex flex-col justify-between w-full max-w-[1200px] mx-auto flex-1 py-1">
       {/* Code Block Mockup header */}
       <div className="font-mono text-[11px] md:text-xs text-zinc-555 border-b border-ide-border/50 pb-2 shrink-0">
         <span className="text-code-keyword">import</span> {"{ Developer }"} <span className="text-code-keyword">from</span> <span className="text-code-string">"suyash"</span>;
